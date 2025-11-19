@@ -70,13 +70,13 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="edit()" class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-colors duration-150">
+                        <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-colors duration-150">
                             Edit
                         </button>
-                        <button onclick="sync()" class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-50 px-2 py-1 rounded transition-colors duration-150">
+                        <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-50 px-2 py-1 rounded transition-colors duration-150">
                             Sync
                         </button>
-                        <button onclick="logout()" class="text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-colors duration-150">
+                        <button class="text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-colors duration-150">
                             Logout
                         </button>
                     </div>
@@ -890,19 +890,6 @@
             }
         }
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '/login';
-            }
-        }
-
-        function edit() {
-            alert('Edit mode activated');
-        }
-
-        function sync() {
-            alert('Syncing data...');
-        }
-    </script>
+          </script>
 </body>
 </html>
