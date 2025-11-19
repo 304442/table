@@ -10,74 +10,74 @@
     <div class="relative inline-block shadow-lg overflow-hidden rounded-2xl border border-slate-200/60 bg-white/95 backdrop-blur-sm">
         <div class="flex" style="height: 800px;">
             <div id="sidebar" class="w-48 bg-gradient-to-b from-slate-50 via-white to-white border-r border-slate-200/60 flex flex-col transition-all duration-200 ease-in-out">
-                <div class="p-4 flex-1 overflow-y-auto sidebar-content">
-                    <h2 class="text-xs font-semibold text-slate-700 mb-4 uppercase tracking-wide">Collections</h2>
-                    <div class="space-y-1.5">
-                        <a href="#" onclick="switchView('table')" class="flex items-center px-3 py-2 text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-sm hover:from-blue-700 hover:to-blue-800 transform transition-all duration-200 hover:scale-[1.02]">TABLE</a>
-                        <a href="#" onclick="switchView('schedule')" class="flex items-center px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-all duration-200 transform hover:scale-[1.02]">SCHEDULE</a>
-                        <a href="#" onclick="switchView('goals')" class="flex items-center px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-all duration-200 transform hover:scale-[1.02]">GOALS</a>
-                        <a href="#" onclick="switchView('daily')" class="flex items-center px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-all duration-200 transform hover:scale-[1.02]">DAILY LOG</a>
-                        <a href="#" onclick="switchView('notes')" class="flex items-center px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-all duration-200 transform hover:scale-[1.02]">NOTES</a>
-                        <a href="#" onclick="switchView('lists')" class="flex items-center px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-all duration-200 transform hover:scale-[1.02]">LISTS</a>
+                <div class="p-2 flex-1 overflow-y-auto sidebar-content">
+                    <h2 class="text-xs font-semibold text-slate-700 mb-3 uppercase tracking-wide">Collections</h2>
+                    <div class="space-y-1">
+                        <a href="#" onclick="switchView('table')" class="flex items-center px-2 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded shadow-sm hover:from-blue-700 hover:to-blue-800 transform transition-all duration-200 hover:scale-[1.02]">TABLE</a>
+                        <a href="#" onclick="switchView('schedule')" class="flex items-center px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-[1.02]">SCHEDULE</a>
+                        <a href="#" onclick="switchView('goals')" class="flex items-center px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-[1.02]">GOALS</a>
+                        <a href="#" onclick="switchView('daily')" class="flex items-center px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-[1.02]">DAILY LOG</a>
+                        <a href="#" onclick="switchView('notes')" class="flex items-center px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-[1.02]">NOTES</a>
+                        <a href="#" onclick="switchView('lists')" class="flex items-center px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-[1.02]">LISTS</a>
                     </div>
                 </div>
             </div>
             <div class="flex-1">
-                <div class="bg-gradient-to-r from-white via-slate-50/30 to-white border-b border-slate-200/60 px-4 py-3 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-4">
-                        <button onclick="toggleSidebar()" class="w-6 h-6 bg-slate-600 hover:bg-slate-700 text-white rounded-lg flex items-center justify-center leading-none shadow-sm transition-all duration-200 hover:scale-110" title="Toggle Sidebar">
+                <div class="bg-gradient-to-r from-white via-slate-50/30 to-white border-b border-slate-200/60 px-2 py-2 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
+                        <button onclick="toggleSidebar()" class="w-5 h-5 bg-slate-600 hover:bg-slate-700 text-white rounded flex items-center justify-center leading-none shadow-sm transition-all duration-200 hover:scale-110" title="Toggle Sidebar">
                             ☰
                         </button>
-                        <select class="text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200">
+                        <select class="text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded px-2 py-1 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200">
                             <option>Select Week</option>
                             <option>Week 1</option>
                             <option>Week 2</option>
                             <option>Week 3</option>
                         </select>
-                        <select class="text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200">
+                        <select class="text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded px-2 py-1 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200">
                             <option>Select City</option>
                             <option>New York</option>
                             <option>Los Angeles</option>
                             <option>Chicago</option>
                         </select>
-                       <div class="border border-purple-300/60 rounded-lg px-3 py-2 bg-purple-50/50 flex items-center space-x-3">
+                       <div class="border border-purple-300/60 rounded px-2 py-1 bg-purple-50/50 flex items-center space-x-2">
                             <span class="text-xs font-semibold text-purple-700">Prayer Times</span>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1">
                                 <div class="flex items-center space-x-1">
-                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-1 rounded transition-all duration-200">F</button>
-                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded-lg px-2 py-1 w-18 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
+                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-1.5 py-0.5 rounded transition-all duration-200">F</button>
+                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded px-1 py-0.5 w-14 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
                                 </div>
                                 <div class="flex items-center space-x-1">
-                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-1 rounded transition-all duration-200">D</button>
-                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded-lg px-2 py-1 w-18 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
+                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-1.5 py-0.5 rounded transition-all duration-200">D</button>
+                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded px-1 py-0.5 w-14 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
                                 </div>
                                 <div class="flex items-center space-x-1">
-                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-1 rounded transition-all duration-200">A</button>
-                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded-lg px-2 py-1 w-18 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
+                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-1.5 py-0.5 rounded transition-all duration-200">A</button>
+                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded px-1 py-0.5 w-14 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
                                 </div>
                                 <div class="flex items-center space-x-1">
-                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-1 rounded transition-all duration-200">M</button>
-                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded-lg px-2 py-1 w-18 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
+                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-1.5 py-0.5 rounded transition-all duration-200">M</button>
+                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded px-1 py-0.5 w-14 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
                                 </div>
                                 <div class="flex items-center space-x-1">
-                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-1 rounded transition-all duration-200">I</button>
-                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded-lg px-2 py-1 w-18 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
+                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-1.5 py-0.5 rounded transition-all duration-200">I</button>
+                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded px-1 py-0.5 w-14 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
                                 </div>
                                 <div class="flex items-center space-x-1">
-                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-1 rounded transition-all duration-200">Q</button>
-                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded-lg px-2 py-1 w-18 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
+                                    <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-1.5 py-0.5 rounded transition-all duration-200">Q</button>
+                                    <input type="time" class="text-xs text-slate-600 border border-purple-200/60 rounded px-1 py-0.5 w-14 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white shadow-sm">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">
+                    <div class="flex items-center space-x-2">
+                        <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">
                             Edit
                         </button>
-                        <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-50 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">
+                        <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-50 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">
                             Sync
                         </button>
-                        <button class="text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">
+                        <button class="text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">
                             Logout
                         </button>
                     </div>
@@ -184,20 +184,20 @@
 
         function createTableView() {
             return `
-                <div class="bg-gradient-to-r from-slate-50/80 via-white to-white border-b border-slate-200/60 px-4 py-3 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="bg-gradient-to-r from-slate-50/80 via-white to-white border-b border-slate-200/60 px-2 py-2 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-slate-700">Data Management</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">+ Add Row</button>
-                        <div class="flex items-center space-x-2">
-                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">View</button>
-                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">Filter</button>
-                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">Sort</button>
-                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">Export</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">+ Add Row</button>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">View</button>
+                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">Filter</button>
+                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">Sort</button>
+                            <button class="text-xs font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 px-2 py-1 rounded transition-all duration-200 hover:shadow-sm">Export</button>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs text-slate-500">32 rows</span>
-                        <div class="w-px h-4 bg-slate-300/60"></div>
+                        <div class="w-px h-3 bg-slate-300/60"></div>
                         <span class="text-xs text-slate-500">25 columns</span>
                     </div>
                 </div>
@@ -206,16 +206,16 @@
                         <thead>
                             <tr>
                                 ${Array.from({length: 25}, (_, i) =>
-                                    `<th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-3 py-3 bg-gradient-to-b from-slate-50/80 to-white border-b border-slate-200/60 sticky top-0 z-20 shadow-sm backdrop-blur-sm">Field ${i + 1}</th>`
+                                    `<th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-50/80 to-white border-b border-slate-200/60 sticky top-0 z-20 shadow-sm backdrop-blur-sm">Field ${i + 1}</th>`
                                 ).join('')}
                             </tr>
                         </thead>
                         <tbody>
                             ${Array.from({length: 32}, (_, i) => {
-                                const bgClass = i % 2 === 0 ? 'bg-white hover:bg-slate-50/50' : 'bg-slate-50/30 hover:bg-slate-100/50';
+                                const bgClass = i % 2 === 0 ? 'bg-white hover:bg-pink-50/50' : 'bg-slate-50/30 hover:bg-slate-100/50';
                                 return `<tr class="${bgClass} transition-colors duration-150">
                                     ${Array.from({length: 25}, (_, j) =>
-                                        `<td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-2 border-b border-slate-100/40">${i * 25 + j + 1}</td>`
+                                        `<td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100/40">${i * 25 + j + 1}</td>`
                                     ).join('')}
                                 </tr>`;
                             }).join('')}
@@ -227,8 +227,8 @@
 
         function createScheduleView() {
             return `
-                <div class="bg-gradient-to-r from-blue-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-blue-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-blue-600">Schedule Management</span>
                         <button onclick="addNewRow()" class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Event</button>
                         <div class="flex items-center space-x-1">
@@ -272,8 +272,8 @@
 
         function createGoalsView() {
             return `
-                <div class="bg-gradient-to-r from-green-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-green-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-green-600">Goals Tracker</span>
                         <button onclick="addNewRow()" class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Goal</button>
                         <div class="flex items-center space-x-1">
@@ -311,8 +311,8 @@
 
         function createDailyView() {
             return `
-                <div class="bg-gradient-to-r from-orange-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-orange-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-orange-600">Daily Log</span>
                         <button onclick="addNewRow()" class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Entry</button>
                         <div class="flex items-center space-x-1">
@@ -349,8 +349,8 @@
 
         function createNotesView() {
             return `
-                <div class="bg-gradient-to-r from-purple-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-purple-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-purple-600">Notes</span>
                         <button onclick="addNewRow()" class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Note</button>
                         <div class="flex items-center space-x-1">
@@ -386,119 +386,123 @@
 
                   function createListsView() {
             return `
-                <div class="bg-gradient-to-r from-pink-50/80 via-white to-white border-b border-slate-200/60 px-4 py-3 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center space-x-4">
+                <div class="bg-gradient-to-r from-pink-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-pink-700">Complete Personal Lists</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">+ Add List</button>
-                        <div class="flex items-center space-x-2">
-                            <button class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm">Archive</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add List</button>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">Archive</button>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <span class="text-xs text-slate-500">68 items</span>
-                        <div class="w-px h-4 bg-slate-300/60"></div>
+                        <div class="w-px h-3 bg-slate-300/60"></div>
                         <span class="text-xs text-slate-500">5 categories</span>
                     </div>
                 </div>
-                <div class="overflow-auto bg-white/95" style="width: 1400px; height: 756px;">
-                    <table class="border-separate border-spacing-0">
+                <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
+                    <table class="border-collapse table-auto">
                         <thead>
                             <tr>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-3 py-3 bg-gradient-to-b from-pink-50/80 to-white border-b border-slate-200/60 sticky top-0 z-20 shadow-sm backdrop-blur-sm">Category</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-3 py-3 bg-gradient-to-b from-pink-50/80 to-white border-b border-slate-200/60 sticky top-0 z-20 shadow-sm backdrop-blur-sm">Item</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-3 py-3 bg-gradient-to-b from-pink-50/80 to-white border-b border-slate-200/60 sticky top-0 z-20 shadow-sm backdrop-blur-sm">Details</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-3 py-3 bg-gradient-to-b from-pink-50/80 to-white border-b border-slate-200/60 sticky top-0 z-20 shadow-sm backdrop-blur-sm">Status</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Category</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Item</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Details</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- WORKOUT SECTION -->
-                            <tr class="bg-white hover:bg-pink-50/50 transition-all duration-150">
-                                <td class="text-left text-xs font-semibold text-slate-800 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">🏋️ WORKOUT</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">⚖️ •🎯 •👔 •🦴 •💪 •🦵</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Tuesday/Wednesday/Friday Weight Training</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 ring-1 ring-green-600/20">Active</span>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-semibold text-slate-800 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">🏋️ WORKOUT</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">⚖️ •🎯 •👔 •🦴 •💪 •🦵</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Tuesday/Wednesday/Friday Weight Training</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 ring-1 ring-green-600/20">Active</span>
                                 </td>
                             </tr>
-                            <tr class="bg-pink-50/30 hover:bg-pink-100/50 transition-all duration-150">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">└─ Weight Training</td>
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">TUESDAY - Upper/Legs</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Incline DB Press, Barbell Squats, DB Row, Leg Curls, SS: Incline DB Curls & Tricep Extensions</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Schedule</span>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Weight Training</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">TUESDAY - Upper/Legs</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Incline DB Press, Barbell Squats, DB Row, Leg Curls, SS: Incline DB Curls & Tricep Extensions</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Schedule</span>
                                 </td>
                             </tr>
-                            <tr class="bg-white hover:bg-pink-50/50 transition-all duration-150">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">└─ Weight Training</td>
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">WEDNESDAY - Push/Pull</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Barbell Bench Press, RDL, Lat Pulldown, Walking Lunges, SS: Cable Lateral Raises & Reverse Crunches</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Schedule</span>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Weight Training</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">WEDNESDAY - Push/Pull</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Barbell Bench Press, RDL, Lat Pulldown, Walking Lunges, SS: Cable Lateral Raises & Reverse Crunches</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Schedule</span>
                                 </td>
                             </tr>
-                            <tr class="bg-pink-50/30 hover:bg-pink-100/50 transition-all duration-150">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">└─ Weight Training</td>
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">FRIDAY - Shoulders/Legs</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Seated DB Shoulder Press, DB Row, Barbell Hip Thrust, Leg Extensions, SS: Seated Chest Flyes & Calf Raises</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Schedule</span>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Weight Training</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">FRIDAY - Shoulders/Legs</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Seated DB Shoulder Press, DB Row, Barbell Hip Thrust, Leg Extensions, SS: Seated Chest Flyes & Calf Raises</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Schedule</span>
                                 </td>
                             </tr>
 
                             <!-- BODYWEIGHT SECTION -->
-                            <tr class="bg-white hover:bg-pink-50/50 transition-all duration-150">
-                                <td class="text-left text-xs font-semibold text-slate-800 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">🤸 BODYWEIGHT</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">No Equipment Needed</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Upper Body, Lower Body, Core & Stretching</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-semibold text-slate-800 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">🤸 BODYWEIGHT</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">No Equipment Needed</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Upper Body, Lower Body, Core & Stretching</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
                                 </td>
                             </tr>
-                            <tr class="bg-pink-50/30 hover:bg-pink-100/50 transition-all duration-150">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">└─ Bodyweight</td>
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">UPPER BODY</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Push-ups, Pull-ups or Table rows, Pike push-ups, Dips, Burpees</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Bodyweight</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">UPPER BODY</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Push-ups, Pull-ups or Table rows, Pike push-ups, Dips, Burpees</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
                                 </td>
                             </tr>
-                            <tr class="bg-white hover:bg-pink-50/50 transition-all duration-150">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">└─ Bodyweight</td>
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">LOWER BODY</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Squats, Lunges, Hip bridges</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Bodyweight</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">LOWER BODY</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Squats, Lunges, Hip bridges</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
                                 </td>
                             </tr>
-                            <tr class="bg-pink-50/30 hover:bg-pink-100/50 transition-all duration-150">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">└─ Bodyweight</td>
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">CORE & STRETCHING</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Plank, Calf raises, Side planks, Dead bugs, Bicycle crunches, Mountain climbers</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Bodyweight</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">CORE & STRETCHING</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Plank, Calf raises, Side planks, Dead bugs, Bicycle crunches, Mountain climbers</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 ring-1 ring-gray-600/20">Available</span>
                                 </td>
                             </tr>
 
                             <!-- MEALS SECTION -->
-                            <tr class="bg-white hover:bg-pink-50/50 transition-all duration-150">
-                                <td class="text-left text-xs font-semibold text-slate-800 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">🍽️ MEALS</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Complete Meal Plans</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">Daily Meals & TUE/WED/FRI Curry</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-3 py-3 border-b border-slate-100/60">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 ring-1 ring-green-600/20">Active</span>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-semibold text-slate-800 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">🍽️ MEALS</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Complete Meal Plans</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Daily Meals & TUE/WED/FRI Curry</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 ring-1 ring-green-600/20">Active</span>
                                 </td>
                             </tr>
                             <tr class="bg-pink-50 hover:bg-pink-100">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Daily Meals</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Super Veggie (DAILY)</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Black Lentils (dry) 45g, Broccoli 250g, Cauliflower 150g, Shiitake Mushrooms 50g, Garlic 1 clove, Ginger Root 3g, Lime 1, Cumin 1T, Apple Cider Vinegar 1T, Hemp Seeds 1T, EVOO 1T</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Daily</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 ring-1 ring-blue-600/20">Daily</span>
+                                </td>
                             </tr>
                             <tr class="bg-white hover:bg-pink-50">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Weekly Meals</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Sweet Potato Cabbage Curry</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">TUE/WED/FRI: Cabbage 2c, Sweet Potato 1, Onion 1, Olive Oil 2T, Cumin Seeds 1t, Dry Red Chili 1, Turmeric 0.5t, Coriander 1t, Red Chili Powder 0.5t, Salt 0.5t, Cilantro 0.25c, Lime 1, Cauliflower Rice 2c, Chicken Thighs 200g OR Beef Chunks 200g</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">TUE/WED/FRI</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700 ring-1 ring-orange-600/20">TUE/WED/FRI</span>
+                                </td>
                             </tr>
                             <tr class="bg-pink-50 hover:bg-pink-100">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Daily Meals</td>
@@ -512,37 +516,49 @@
                                 <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">🛒 GROCERY</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Complete Shopping List</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Proteins, Vegetables, Nuts & Seeds, Oils & Liquids, Spices</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 ring-1 ring-red-600/20">Need to Buy</span>
+                                </td>
                             </tr>
                             <tr class="bg-pink-50 hover:bg-pink-100">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Groceries</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">PROTEINS</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Chicken Thighs 600g OR Beef Chunks 600g</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 ring-1 ring-red-600/20">Need to Buy</span>
+                                </td>
                             </tr>
                             <tr class="bg-white hover:bg-pink-50">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Groceries</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">VEGETABLES</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Black Lentils 315g, Broccoli 1.75kg, Cauliflower 1.05kg, Shiitake Mushrooms 350g, Garlic 7 cloves, Ginger Root 21g, Limes 10, Onions 3, Cabbage 6c, Sweet Potatoes 3, Cilantro 0.75c, Cauliflower Rice 6c</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 ring-1 ring-red-600/20">Need to Buy</span>
+                                </td>
                             </tr>
                             <tr class="bg-pink-50 hover:bg-pink-100">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Groceries</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">NUTS & SEEDS</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Macadamia Nut Milk 525ml, Macadamia Nuts (ground) 21T, Walnuts (ground) 14t, Chia Seeds 14T, Ground Flax 7t, Hemp Seeds 7T, Mixed Berries 3.5c, Cherries 21, Pomegranate Juice 14oz</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 ring-1 ring-red-600/20">Need to Buy</span>
+                                </td>
                             </tr>
                             <tr class="bg-white hover:bg-pink-50">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Groceries</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">OILS & LIQUIDS</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">EVOO 105ml, Olive Oil 90ml, Apple Cider Vinegar 7T</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 ring-1 ring-red-600/20">Need to Buy</span>
+                                </td>
                             </tr>
                             <tr class="bg-pink-50 hover:bg-pink-100">
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">└─ Groceries</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">SPICES</td>
                                 <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Cumin Ground 7T, Cumin Seeds 3t, Turmeric 1.5t, Coriander 3t, Red Chili Powder 1.5t, Dry Red Chili 3, Cocoa Powder 7T, Sunflower Lecithin 7t, Ceylon Cinnamon 3.5t, Salt 0.5t</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 ring-1 ring-red-600/20">Need to Buy</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
