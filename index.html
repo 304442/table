@@ -407,13 +407,28 @@
                     const td = e.target;
                     const currentText = td.innerText.trim();
 
+                    const styles = window.getComputedStyle(td);
+                    const paddingLeft = styles.paddingLeft;
+                    const paddingRight = styles.paddingRight;
+                    const paddingTop = styles.paddingTop;
+                    const paddingBottom = styles.paddingBottom;
+
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = currentText;
-                    input.className = td.className + ' w-full border-2 border-blue-400 outline-none bg-blue-50';
-
-                    input.style.width = td.offsetWidth + 'px';
-                    input.style.height = td.offsetHeight + 'px';
+                    input.className = td.className + ' bg-blue-50 outline-none';
+                    input.style.cssText = `
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid #60a5fa;
+                        padding: 0;
+                        margin: 0;
+                        box-sizing: border-box;
+                        font: inherit;
+                        text-align: inherit;
+                        background: #eff6ff;
+                    `;
+                    td.style.padding = '0';
 
                     td.innerHTML = '';
                     td.appendChild(input);
@@ -423,6 +438,7 @@
                     function saveEdit() {
                         const newText = input.value || currentText;
                         td.innerText = newText;
+                        td.style.padding = '';
                     }
 
                     input.addEventListener('blur', saveEdit);
@@ -432,6 +448,7 @@
                         }
                         if (event.key === 'Escape') {
                             td.innerText = currentText;
+                            td.style.padding = '';
                         }
                     });
                 }
