@@ -206,7 +206,7 @@
                         <tbody>
                             ${Array.from({length: 32}, (_, i) => {
                                 const bgClass = i % 2 === 0 ? 'bg-white hover:bg-pink-50/50' : 'bg-slate-50/30 hover:bg-slate-100/50';
-                                return `<tr class="${bgClass} transition-colors duration-150">
+                                return `<tr class="${bgClass} transition-all duration-200">
                                     ${Array.from({length: 25}, (_, j) =>
                                         `<td class="text-left text-xs text-slate-600 whitespace-nowrap px-1 py-1.5 border-b border-slate-100">${i * 25 + j + 1}</td>`
                                     ).join('')}
@@ -224,11 +224,11 @@
                 <div class="bg-gradient-to-r from-blue-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2 flex-1 min-w-0">
                         <span class="text-xs font-semibold text-blue-600 whitespace-nowrap">Daily Schedule Planner</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150 whitespace-nowrap">+ Add Activity</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-all duration-200 whitespace-nowrap">+ Add Activity</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150 whitespace-nowrap">Week</button>
-                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150 whitespace-nowrap">Month</button>
-                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150 whitespace-nowrap">Year</button>
+                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-all duration-200 whitespace-nowrap">Week</button>
+                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-all duration-200 whitespace-nowrap">Month</button>
+                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-all duration-200 whitespace-nowrap">Year</button>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2 whitespace-nowrap">
@@ -782,9 +782,9 @@
                 <div class="bg-gradient-to-r from-green-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-green-600">Goals Tracker</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Goal</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-all duration-200">+ Add Goal</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-colors duration-150">Progress</button>
+                            <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-all duration-200">Progress</button>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -823,10 +823,10 @@
                 <div class="bg-gradient-to-r from-orange-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-orange-600">Daily Log</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Entry</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-all duration-200">+ Add Entry</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-colors duration-150">Today</button>
-                            <button class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-colors duration-150">Search</button>
+                            <button class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-all duration-200">Today</button>
+                            <button class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-all duration-200">Search</button>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -863,9 +863,9 @@
                 <div class="bg-gradient-to-r from-purple-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-purple-600">Notes</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add Note</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-all duration-200">+ Add Note</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-colors duration-150">Categories</button>
+                            <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-all duration-200">Categories</button>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -902,9 +902,9 @@
                 <div class="bg-gradient-to-r from-pink-50 to-white border-b border-slate-200 px-2 py-1 flex items-center justify-between shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-pink-700">Complete Personal Lists</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add List</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-2 py-0.5 rounded transition-all duration-200">+ Add List</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">Archive</button>
+                            <button class="text-xs font-medium text-pink-700 hover:text-pink-800 hover:bg-pink-100 px-2 py-0.5 rounded transition-all duration-200">Archive</button>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -1269,7 +1269,7 @@
                         });
                     } else {
                         editElement = input;
-                        editElement.className = element.className + ` ${isCollection ? 'bg-pink-50' : 'bg-blue-50'} outline-none border ${isCollection ? 'border-pink-300' : ''} rounded`;
+                        editElement.className = element.className + ` ${isCollection ? 'bg-pink-50' : 'bg-blue-50'} outline-none border ${isCollection ? 'border-pink-300' : 'border-blue-500'} rounded`;
                     }
 
                     element.innerHTML = '';
