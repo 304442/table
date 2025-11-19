@@ -384,11 +384,11 @@
             `;
         }
 
-        function createListsView() {
+              function createListsView() {
             return `
                 <div class="bg-gradient-to-r from-pink-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
                     <div class="flex items-center space-x-3">
-                        <span class="text-xs font-semibold text-pink-600">Lists</span>
+                        <span class="text-xs font-semibold text-pink-600">Personal Lists</span>
                         <button onclick="addNewRow()" class="text-xs font-medium text-pink-600 hover:text-pink-700 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">+ Add List</button>
                         <div class="flex items-center space-x-1">
                             <button class="text-xs font-medium text-pink-600 hover:text-pink-700 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">Archive</button>
@@ -397,25 +397,79 @@
                     <div class="flex items-center space-x-2">
                         <span class="text-xs text-slate-500">4 lists</span>
                         <div class="w-px h-4 bg-slate-300"></div>
-                        <span class="text-xs text-slate-500">28 items</span>
+                        <span class="text-xs text-slate-500">68 items</span>
                     </div>
                 </div>
                 <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
                     <table class="border-collapse table-auto">
                         <thead>
                             <tr>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">List Name</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Items</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Completed</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Progress</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Category</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Item</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Details</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="bg-white hover:bg-pink-50">
-                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Shopping List</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">63%</td>
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">WORKOUT</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">⚖️ •🎯 •👔 •🦴 •💪 •🦵</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Tuesday/Wednesday/Friday</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Active</td>
+                            </tr>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">WORKOUT</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Incline Dumbbell Press</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Tuesday</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Pending</td>
+                            </tr>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">WORKOUT</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Barbell Squats</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Tuesday</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Pending</td>
+                            </tr>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">WORKOUT</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Bodyweight Upper Body</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Push-ups, Pull-ups, Dips</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Available</td>
+                            </tr>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">MEALS</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Super Veggie (DAILY)</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Black Lentils 45g, Broccoli 250g</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Active</td>
+                            </tr>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">MEALS</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Sweet Potato Cabbage Curry</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">TUE/WED/FRI with Chicken/Beef</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Active</td>
+                            </tr>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">MEALS</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Nutty Pudding (DAILY)</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Macadamia, Chia, Berries</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Active</td>
+                            </tr>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">GROCERY</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Proteins</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Chicken Thighs 600g OR Beef 600g</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                            </tr>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">GROCERY</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Vegetables</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Broccoli 1.75kg, Cauliflower 1.05kg</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
+                            </tr>
+                            <tr class="bg-pink-50 hover:bg-pink-100">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">GROCERY</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Nuts & Seeds</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Macadamia, Walnuts, Chia, Flax</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Need to Buy</td>
                             </tr>
                         </tbody>
                     </table>
