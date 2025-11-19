@@ -401,6 +401,44 @@
             `;
         }
 
+        function makeEditable() {
+            document.addEventListener('click', function(e) {
+                if (e.target.tagName === 'TD' && !e.target.querySelector('input')) {
+                    const td = e.target;
+                    const currentText = td.innerText.trim();
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentText;
+                    input.className = td.className + ' w-full border-2 border-blue-400 outline-none bg-blue-50';
+
+                    input.style.width = td.offsetWidth + 'px';
+                    input.style.height = td.offsetHeight + 'px';
+
+                    td.innerHTML = '';
+                    td.appendChild(input);
+                    input.focus();
+                    input.select();
+
+                    function saveEdit() {
+                        const newText = input.value || currentText;
+                        td.innerText = newText;
+                    }
+
+                    input.addEventListener('blur', saveEdit);
+                    input.addEventListener('keydown', function(event) {
+                        if (event.key === 'Enter') {
+                            saveEdit();
+                        }
+                        if (event.key === 'Escape') {
+                            td.innerText = currentText;
+                        }
+                    });
+                }
+            });
+        }
+
         // Load table view by default
         switchView('table');
+        makeEditable();
     </script>
