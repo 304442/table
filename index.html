@@ -164,18 +164,10 @@
                 button.classList.add('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900');
             });
 
-            // Add active state to selected button
-            const viewNames = {
-                'table': 'TABLE',
-                'schedule': 'SCHEDULE',
-                'goals': 'GOALS',
-                'daily': 'DAILY LOG',
-                'notes': 'NOTES',
-                'lists': 'LISTS'
-            };
-
+            // Add active state to selected button (supports custom names)
             buttons.forEach(button => {
-                if (button.textContent.trim() === viewNames[viewName]) {
+                const buttonViewName = getViewNameFromText(button.textContent.trim());
+                if (buttonViewName === viewName) {
                     button.classList.remove('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900');
                     button.classList.add('text-white', 'bg-gradient-to-r', 'from-blue-600', 'to-blue-700', 'shadow-sm');
                 }
@@ -643,7 +635,112 @@
         }
 
         function makeEditable() {
+            let lastClicked = null;
+
             document.addEventListener('click', function(e) {
+                // Handle Collections (sidebar) editing - only on double click
+                if (e.target.tagName === 'A' &&
+                    e.target.closest('.space-y-1') &&
+                    !e.target.querySelector('input') &&
+                    !e.target.querySelector('select')) {
+
+                    const anchor = e.target;
+
+                    if (lastClicked === anchor) {
+                        // This is a double click
+                        lastClicked = null;
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const currentText = anchor.textContent.trim();
+                        const rect = anchor.getBoundingClientRect();
+                        const originalWidth = rect.width;
+                        const originalHeight = rect.height;
+
+                        anchor.style.padding = '0';
+                        anchor.style.width = originalWidth + 'px';
+                        anchor.style.minWidth = originalWidth + 'px';
+                        anchor.style.maxWidth = originalWidth + 'px';
+                        anchor.style.height = originalHeight + 'px';
+                        anchor.style.display = 'flex';
+                        anchor.style.alignItems = 'center';
+
+                        const element = document.createElement('input');
+                        element.type = 'text';
+                        element.value = currentText;
+                        element.className = anchor.className.replace(/text-\S+\s+font-\S+/g, '').replace(/hover:\S+/g, '') + ' bg-pink-50 outline-none border border-pink-300 rounded';
+                        element.style.cssText = `
+                            width: ${originalWidth}px;
+                            height: ${originalHeight}px;
+                            border: 2px solid #ec4899;
+                            padding: 2px 6px;
+                            margin: 0;
+                            box-sizing: border-box;
+                            font-size: 12px;
+                            font-weight: 500;
+                            text-align: left;
+                            background: #fdf2f8;
+                            min-width: ${originalWidth}px;
+                            max-width: ${originalWidth}px;
+                            flex: none;
+                            display: block;
+                        `;
+
+                        anchor.innerHTML = '';
+                        anchor.appendChild(element);
+                        element.focus();
+                        element.select();
+
+                        function saveCollectionEdit() {
+                            const newText = element.value || currentText;
+                            // Clean up the element and restore original structure
+                            anchor.innerHTML = newText;
+                            anchor.style.padding = '';
+                            anchor.style.width = '';
+                            anchor.style.minWidth = '';
+                            anchor.style.maxWidth = '';
+                            anchor.style.height = '';
+                            anchor.style.display = '';
+                            anchor.style.alignItems = '';
+
+                            // Restore the onclick functionality
+                            anchor.setAttribute('onclick', `switchView('${getViewNameFromText(newText)}')`);
+                        }
+
+                        element.addEventListener('blur', saveCollectionEdit);
+                        element.addEventListener('keydown', function(event) {
+                            if (event.key === 'Enter') {
+                                saveCollectionEdit();
+                                // Trigger the view switch after editing
+                                const viewName = getViewNameFromText(element.value || currentText);
+                                setTimeout(() => switchView(viewName), 10);
+                            }
+                            if (event.key === 'Escape') {
+                                anchor.innerHTML = currentText;
+                                anchor.style.padding = '';
+                                anchor.style.width = '';
+                                anchor.style.minWidth = '';
+                                anchor.style.maxWidth = '';
+                                anchor.style.height = '';
+                                anchor.style.display = '';
+                                anchor.style.alignItems = '';
+                            }
+                        });
+                        return;
+                    } else {
+                        // This is the first click
+                        lastClicked = anchor;
+                        // Clear the last clicked after a short delay
+                        setTimeout(() => {
+                            if (lastClicked === anchor) {
+                                lastClicked = null;
+                            }
+                        }, 300);
+                        return; // Don't proceed to table cell editing
+                    }
+                }
+
+                // Handle table cell editing (existing functionality)
                 if (e.target.tagName === 'TD' && !e.target.querySelector('input') && !e.target.querySelector('select')) {
                     const td = e.target;
                     const currentText = td.innerText.trim();
@@ -756,6 +853,20 @@
                     });
                 }
             });
+        }
+
+        function getViewNameFromText(text) {
+            const textUpper = text.toUpperCase().trim();
+            const viewMap = {
+                'TABLE': 'table',
+                'SCHEDULE': 'schedule',
+                'GOALS': 'goals',
+                'DAILY LOG': 'daily',
+                'DAILY': 'daily',
+                'NOTES': 'notes',
+                'LISTS': 'lists'
+            };
+            return viewMap[textUpper] || 'table';
         }
 
         // Load table view by default
