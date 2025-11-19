@@ -638,219 +638,169 @@
             let lastClicked = null;
 
             document.addEventListener('click', function(e) {
-                // Handle Collections (sidebar) editing - only on double click
-                if (e.target.tagName === 'A' &&
-                    e.target.closest('.space-y-1') &&
-                    !e.target.querySelector('input') &&
-                    !e.target.querySelector('select')) {
+                const target = e.target;
 
-                    const anchor = e.target;
+                // Check if target is editable (TD or sidebar A)
+                const isEditableTD = target.tagName === 'TD' && !target.querySelector('input') && !target.querySelector('select');
+                const isEditableCollection = target.tagName === 'A' && target.closest('.space-y-1') && !target.querySelector('input') && !target.querySelector('select');
 
-                    if (lastClicked === anchor) {
-                        // This is a double click
-                        lastClicked = null;
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        const currentText = anchor.textContent.trim();
-                        const rect = anchor.getBoundingClientRect();
-                        const originalWidth = rect.width;
-                        const originalHeight = rect.height;
-
-                        anchor.style.padding = '0';
-                        anchor.style.width = originalWidth + 'px';
-                        anchor.style.minWidth = originalWidth + 'px';
-                        anchor.style.maxWidth = originalWidth + 'px';
-                        anchor.style.height = originalHeight + 'px';
-                        anchor.style.display = 'flex';
-                        anchor.style.alignItems = 'center';
-
-                        const element = document.createElement('input');
-                        element.type = 'text';
-                        element.value = currentText;
-                        element.className = anchor.className.replace(/text-\S+\s+font-\S+/g, '').replace(/hover:\S+/g, '') + ' bg-pink-50 outline-none border border-pink-300 rounded';
-                        element.style.cssText = `
-                            width: ${originalWidth}px;
-                            height: ${originalHeight}px;
-                            border: 2px solid #ec4899;
-                            padding: 2px 6px;
-                            margin: 0;
-                            box-sizing: border-box;
-                            font-size: 12px;
-                            font-weight: 500;
-                            text-align: left;
-                            background: #fdf2f8;
-                            min-width: ${originalWidth}px;
-                            max-width: ${originalWidth}px;
-                            flex: none;
-                            display: block;
-                        `;
-
-                        anchor.innerHTML = '';
-                        anchor.appendChild(element);
-                        element.focus();
-                        element.select();
-
-                        function saveCollectionEdit() {
-                            const newText = element.value || currentText;
-                            // Clean up the element and restore original structure
-                            anchor.innerHTML = newText;
-                            anchor.style.padding = '';
-                            anchor.style.width = '';
-                            anchor.style.minWidth = '';
-                            anchor.style.maxWidth = '';
-                            anchor.style.height = '';
-                            anchor.style.display = '';
-                            anchor.style.alignItems = '';
-
-                            // Restore the onclick functionality
-                            anchor.setAttribute('onclick', `switchView('${getViewNameFromText(newText)}')`);
-                        }
-
-                        element.addEventListener('blur', saveCollectionEdit);
-                        element.addEventListener('keydown', function(event) {
-                            if (event.key === 'Enter') {
-                                saveCollectionEdit();
-                                // Trigger the view switch after editing
-                                const viewName = getViewNameFromText(element.value || currentText);
-                                setTimeout(() => switchView(viewName), 10);
-                            }
-                            if (event.key === 'Escape') {
-                                anchor.innerHTML = currentText;
-                                anchor.style.padding = '';
-                                anchor.style.width = '';
-                                anchor.style.minWidth = '';
-                                anchor.style.maxWidth = '';
-                                anchor.style.height = '';
-                                anchor.style.display = '';
-                                anchor.style.alignItems = '';
-                            }
-                        });
-                        return;
-                    } else {
-                        // This is the first click
-                        lastClicked = anchor;
-                        // Clear the last clicked after a short delay
-                        setTimeout(() => {
-                            if (lastClicked === anchor) {
-                                lastClicked = null;
-                            }
-                        }, 300);
-                        return; // Don't proceed to table cell editing
-                    }
+                if (!isEditableTD && !isEditableCollection) {
+                    lastClicked = null;
+                    return;
                 }
 
-                // Handle table cell editing (existing functionality)
-                if (e.target.tagName === 'TD' && !e.target.querySelector('input') && !e.target.querySelector('select')) {
-                    const td = e.target;
-                    const currentText = td.innerText.trim();
-                    const tableHeader = td.parentElement.querySelector('th')?.innerText.trim() || '';
+                // Double-click detection
+                if (lastClicked === target) {
+                    // This is a double click - proceed with editing
+                    lastClicked = null;
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                    const rect = td.getBoundingClientRect();
+                    const isCollection = isEditableCollection;
+                    const element = isCollection ? target : target; // target is TD or A
+                    const currentText = isCollection ? target.textContent.trim() : target.innerText.trim();
+
+                    const rect = element.getBoundingClientRect();
                     const originalWidth = rect.width;
                     const originalHeight = rect.height;
 
-                    td.style.padding = '0';
-                    td.style.width = originalWidth + 'px';
-                    td.style.minWidth = originalWidth + 'px';
-                    td.style.maxWidth = originalWidth + 'px';
-                    td.style.height = originalHeight + 'px';
+                    // Store original styles
+                    const originalStyles = {
+                        padding: element.style.padding,
+                        width: element.style.width,
+                        minWidth: element.style.minWidth,
+                        maxWidth: element.style.maxWidth,
+                        height: element.style.height,
+                        display: element.style.display,
+                        alignItems: element.style.alignItems
+                    };
 
-                    let element;
-                    const baseStyle = `
+                    // Apply editing styles
+                    element.style.padding = '0';
+                    element.style.width = originalWidth + 'px';
+                    element.style.minWidth = originalWidth + 'px';
+                    element.style.maxWidth = originalWidth + 'px';
+                    element.style.height = originalHeight + 'px';
+
+                    if (isCollection) {
+                        element.style.display = 'flex';
+                        element.style.alignItems = 'center';
+                    }
+
+                    // Create input element
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentText;
+
+                    // Unified styling
+                    const inputStyle = `
                         width: ${originalWidth}px;
                         height: ${originalHeight}px;
-                        border: 2px solid #60a5fa;
-                        padding: 0;
+                        border: 2px solid ${isCollection ? '#ec4899' : '#60a5fa'};
+                        padding: ${isCollection ? '2px 6px' : '0'};
                         margin: 0;
                         box-sizing: border-box;
-                        font: inherit;
-                        text-align: inherit;
-                        background: #eff6ff;
+                        font-size: ${isCollection ? '12px' : 'inherit'};
+                        font-weight: ${isCollection ? '500' : 'inherit'};
+                        text-align: ${isCollection ? 'left' : 'inherit'};
+                        background: ${isCollection ? '#fdf2f8' : '#eff6ff'};
                         min-width: ${originalWidth}px;
                         max-width: ${originalWidth}px;
                         flex: none;
                         display: block;
+                        ${isCollection ? '' : 'font: inherit;'}
                     `;
 
-                    // Check if this is a category column
-                    const isCategoryColumn = tableHeader.toLowerCase().includes('categor') ||
-                                            tableHeader.toLowerCase().includes('type') ||
-                                            tableHeader.toLowerCase().includes('status') ||
-                                            currentText === 'Work' || currentText === 'Personal' ||
-                                            currentText === 'Urgent' || currentText === 'Normal';
+                    input.style.cssText = inputStyle;
 
-                    if (isCategoryColumn) {
-                        element = document.createElement('select');
-                        element.className = td.className + ' bg-blue-50 outline-none cursor-pointer';
-                        element.style.cssText = baseStyle;
+                    // Handle special category columns for table cells
+                    let useSelect = false;
+                    if (!isCollection) {
+                        const tableHeader = element.parentElement.querySelector('th')?.innerText.trim() || '';
+                        useSelect = tableHeader.toLowerCase().includes('categor') ||
+                                   tableHeader.toLowerCase().includes('type') ||
+                                   tableHeader.toLowerCase().includes('status') ||
+                                   currentText === 'Work' || currentText === 'Personal' ||
+                                   currentText === 'Urgent' || currentText === 'Normal';
+                    }
 
-                        // Add options based on current value
-                        if (currentText === 'Work' || currentText === 'Personal') {
-                            ['Work', 'Personal'].forEach(option => {
-                                const opt = document.createElement('option');
-                                opt.value = option;
-                                opt.textContent = option;
-                                opt.selected = option === currentText;
-                                element.appendChild(opt);
-                            });
-                        } else if (currentText === 'Urgent' || currentText === 'Normal') {
-                            ['Urgent', 'Normal'].forEach(option => {
-                                const opt = document.createElement('option');
-                                opt.value = option;
-                                opt.textContent = option;
-                                opt.selected = option === currentText;
-                                element.appendChild(opt);
-                            });
-                        } else {
-                            // Generic options
-                            ['Work', 'Personal', 'Urgent', 'Normal'].forEach(option => {
-                                const opt = document.createElement('option');
-                                opt.value = option;
-                                opt.textContent = option;
-                                opt.selected = option === currentText;
-                                element.appendChild(opt);
-                            });
-                        }
+                    let editElement;
+                    if (useSelect) {
+                        editElement = document.createElement('select');
+                        editElement.className = element.className + ' bg-blue-50 outline-none cursor-pointer';
+                        editElement.style.cssText = inputStyle;
+
+                        // Add options
+                        const options = (currentText === 'Work' || currentText === 'Personal')
+                            ? ['Work', 'Personal']
+                            : (currentText === 'Urgent' || currentText === 'Normal')
+                            ? ['Urgent', 'Normal']
+                            : ['Work', 'Personal', 'Urgent', 'Normal'];
+
+                        options.forEach(option => {
+                            const opt = document.createElement('option');
+                            opt.value = option;
+                            opt.textContent = option;
+                            opt.selected = option === currentText;
+                            editElement.appendChild(opt);
+                        });
                     } else {
-                        element = document.createElement('input');
-                        element.type = 'text';
-                        element.value = currentText;
-                        element.className = td.className + ' bg-blue-50 outline-none';
-                        element.style.cssText = baseStyle;
+                        editElement = input;
+                        editElement.className = element.className + ` ${isCollection ? 'bg-pink-50' : 'bg-blue-50'} outline-none border ${isCollection ? 'border-pink-300' : ''} rounded`;
                     }
 
-                    td.innerHTML = '';
-                    td.appendChild(element);
-                    element.focus();
-                    if (element.tagName === 'INPUT') {
-                        element.select();
+                    element.innerHTML = '';
+                    element.appendChild(editElement);
+                    editElement.focus();
+                    if (editElement.tagName === 'INPUT') {
+                        editElement.select();
                     }
 
+                    // Save function
                     function saveEdit() {
-                        const newText = element.value || currentText;
-                        td.innerText = newText;
-                        td.style.padding = '';
-                        td.style.width = '';
-                        td.style.minWidth = '';
-                        td.style.maxWidth = '';
-                        td.style.height = '';
+                        const newText = editElement.value || editElement.options[editElement.selectedIndex]?.text || currentText;
+
+                        if (isCollection) {
+                            element.innerHTML = newText;
+                            element.setAttribute('onclick', `switchView('${getViewNameFromText(newText)}')`);
+                        } else {
+                            element.innerText = newText;
+                        }
+
+                        // Restore original styles
+                        Object.keys(originalStyles).forEach(prop => {
+                            element.style[prop] = originalStyles[prop];
+                        });
                     }
 
-                    element.addEventListener('blur', saveEdit);
-                    element.addEventListener('keydown', function(event) {
+                    editElement.addEventListener('blur', saveEdit);
+                    editElement.addEventListener('keydown', function(event) {
                         if (event.key === 'Enter') {
                             saveEdit();
+                            if (isCollection) {
+                                const viewName = getViewNameFromText(editElement.value || currentText);
+                                setTimeout(() => switchView(viewName), 10);
+                            }
                         }
                         if (event.key === 'Escape') {
-                            td.innerText = currentText;
-                            td.style.padding = '';
-                            td.style.width = '';
-                            td.style.minWidth = '';
-                            td.style.maxWidth = '';
-                            td.style.height = '';
+                            element.innerHTML = currentText;
+                            if (isCollection) {
+                                element.setAttribute('onclick', `switchView('${getViewNameFromText(currentText)}')`);
+                            }
+                            Object.keys(originalStyles).forEach(prop => {
+                                element.style[prop] = originalStyles[prop];
+                            });
                         }
                     });
+
+                } else {
+                    // First click - track it
+                    lastClicked = target;
+                    setTimeout(() => {
+                        if (lastClicked === target) {
+                            lastClicked = null;
+                        }
+                    }, 300);
                 }
             });
         }
