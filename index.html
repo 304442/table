@@ -1038,12 +1038,13 @@
 
     </div>
 
-    <script type="module">
+    <script>
         // TypeScript-style type annotations (for better IDE support)
-        const toggleSidebar = (): void => {
-            const sidebar = document.getElementById('sidebar') as HTMLElement;
-            const sidebarContent = document.querySelector('.sidebar-content') as HTMLElement;
-            const toggleIcon = document.getElementById('toggle-icon') as HTMLElement;
+        /** @type {() => void} */
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.querySelector('.sidebar-content');
+            const toggleIcon = document.getElementById('toggle-icon');
 
             if (sidebarContent?.classList.contains('hidden')) {
                 // Expand sidebar
@@ -1058,10 +1059,9 @@
                 sidebar?.classList.add('w-0');
                 if (toggleIcon) toggleIcon.title = 'Expand sidebar';
             }
-        };
+        }
 
-        // Make function globally available
-        (window as any).toggleSidebar = toggleSidebar;
+        // Function is automatically globally available for onclick handlers
     </script>
 </body>
 </html>
