@@ -403,19 +403,23 @@
 
         function makeEditable() {
             document.addEventListener('click', function(e) {
-                if (e.target.tagName === 'TD' && !e.target.querySelector('input')) {
+                if (e.target.tagName === 'TD' && !e.target.querySelector('input') && !e.target.querySelector('select')) {
                     const td = e.target;
                     const currentText = td.innerText.trim();
+                    const tableHeader = td.parentElement.querySelector('th')?.innerText.trim() || '';
 
                     const rect = td.getBoundingClientRect();
                     const originalWidth = rect.width;
                     const originalHeight = rect.height;
 
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = currentText;
-                    input.className = td.className + ' bg-blue-50 outline-none';
-                    input.style.cssText = `
+                    td.style.padding = '0';
+                    td.style.width = originalWidth + 'px';
+                    td.style.minWidth = originalWidth + 'px';
+                    td.style.maxWidth = originalWidth + 'px';
+                    td.style.height = originalHeight + 'px';
+
+                    let element;
+                    const baseStyle = `
                         width: ${originalWidth}px;
                         height: ${originalHeight}px;
                         border: 2px solid #60a5fa;
@@ -430,19 +434,63 @@
                         flex: none;
                         display: block;
                     `;
-                    td.style.padding = '0';
-                    td.style.width = originalWidth + 'px';
-                    td.style.minWidth = originalWidth + 'px';
-                    td.style.maxWidth = originalWidth + 'px';
-                    td.style.height = originalHeight + 'px';
+
+                    // Check if this is a category column
+                    const isCategoryColumn = tableHeader.toLowerCase().includes('categor') ||
+                                            tableHeader.toLowerCase().includes('type') ||
+                                            tableHeader.toLowerCase().includes('status') ||
+                                            currentText === 'Work' || currentText === 'Personal' ||
+                                            currentText === 'Urgent' || currentText === 'Normal';
+
+                    if (isCategoryColumn) {
+                        element = document.createElement('select');
+                        element.className = td.className + ' bg-blue-50 outline-none cursor-pointer';
+                        element.style.cssText = baseStyle;
+
+                        // Add options based on current value
+                        if (currentText === 'Work' || currentText === 'Personal') {
+                            ['Work', 'Personal'].forEach(option => {
+                                const opt = document.createElement('option');
+                                opt.value = option;
+                                opt.textContent = option;
+                                opt.selected = option === currentText;
+                                element.appendChild(opt);
+                            });
+                        } else if (currentText === 'Urgent' || currentText === 'Normal') {
+                            ['Urgent', 'Normal'].forEach(option => {
+                                const opt = document.createElement('option');
+                                opt.value = option;
+                                opt.textContent = option;
+                                opt.selected = option === currentText;
+                                element.appendChild(opt);
+                            });
+                        } else {
+                            // Generic options
+                            ['Work', 'Personal', 'Urgent', 'Normal'].forEach(option => {
+                                const opt = document.createElement('option');
+                                opt.value = option;
+                                opt.textContent = option;
+                                opt.selected = option === currentText;
+                                element.appendChild(opt);
+                            });
+                        }
+                    } else {
+                        element = document.createElement('input');
+                        element.type = 'text';
+                        element.value = currentText;
+                        element.className = td.className + ' bg-blue-50 outline-none';
+                        element.style.cssText = baseStyle;
+                    }
 
                     td.innerHTML = '';
-                    td.appendChild(input);
-                    input.focus();
-                    input.select();
+                    td.appendChild(element);
+                    element.focus();
+                    if (element.tagName === 'INPUT') {
+                        element.select();
+                    }
 
                     function saveEdit() {
-                        const newText = input.value || currentText;
+                        const newText = element.value || currentText;
                         td.innerText = newText;
                         td.style.padding = '';
                         td.style.width = '';
@@ -451,8 +499,8 @@
                         td.style.height = '';
                     }
 
-                    input.addEventListener('blur', saveEdit);
-                    input.addEventListener('keydown', function(event) {
+                    element.addEventListener('blur', saveEdit);
+                    element.addEventListener('keydown', function(event) {
                         if (event.key === 'Enter') {
                             saveEdit();
                         }
