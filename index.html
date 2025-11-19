@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table with Attached Collections</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-6">
     <!-- Single container for table + attached navigation -->
@@ -1038,25 +1038,30 @@
 
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const sidebarContent = document.querySelector('.sidebar-content');
+    <script type="module">
+        // TypeScript-style type annotations (for better IDE support)
+        const toggleSidebar = (): void => {
+            const sidebar = document.getElementById('sidebar') as HTMLElement;
+            const sidebarContent = document.querySelector('.sidebar-content') as HTMLElement;
+            const toggleIcon = document.getElementById('toggle-icon') as HTMLElement;
 
-            if (sidebarContent.classList.contains('hidden')) {
+            if (sidebarContent?.classList.contains('hidden')) {
                 // Expand sidebar
-                sidebarContent.classList.remove('hidden');
-                sidebar.classList.remove('w-0');
-                sidebar.classList.add('w-48');
-                document.getElementById('toggle-icon').title = 'Collapse sidebar';
+                sidebarContent?.classList.remove('hidden');
+                sidebar?.classList.remove('w-0');
+                sidebar?.classList.add('w-48');
+                if (toggleIcon) toggleIcon.title = 'Collapse sidebar';
             } else {
                 // Collapse sidebar
-                sidebarContent.classList.add('hidden');
-                sidebar.classList.remove('w-48');
-                sidebar.classList.add('w-0');
-                document.getElementById('toggle-icon').title = 'Expand sidebar';
+                sidebarContent?.classList.add('hidden');
+                sidebar?.classList.remove('w-48');
+                sidebar?.classList.add('w-0');
+                if (toggleIcon) toggleIcon.title = 'Expand sidebar';
             }
-        }
+        };
+
+        // Make function globally available
+        (window as any).toggleSidebar = toggleSidebar;
     </script>
 </body>
 </html>
