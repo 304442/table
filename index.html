@@ -13,12 +13,12 @@
                 <div class="p-3 flex-1 overflow-y-auto sidebar-content">
                     <h2 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Collections</h2>
                     <div class="space-y-1">
-                        <a href="#" class="flex px-2 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded shadow-sm">TABLE</a>
-                        <a href="#" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">SCHEDULE</a>
-                        <a href="#" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">GOALS</a>
-                        <a href="#" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">DAILY LOG</a>
-                        <a href="#" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">NOTES</a>
-                        <a href="#" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">LISTS</a>
+                        <a href="#" onclick="switchView('table')" class="flex px-2 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded shadow-sm">TABLE</a>
+                        <a href="#" onclick="switchView('schedule')" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">SCHEDULE</a>
+                        <a href="#" onclick="switchView('goals')" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">GOALS</a>
+                        <a href="#" onclick="switchView('daily')" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">DAILY LOG</a>
+                        <a href="#" onclick="switchView('notes')" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">NOTES</a>
+                        <a href="#" onclick="switchView('lists')" class="flex px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-colors duration-150">LISTS</a>
                     </div>
                 </div>
             </div>
@@ -82,6 +82,88 @@
                         </button>
                     </div>
                 </div>
+                <div id="content-area">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.querySelector('.sidebar-content');
+            if (sidebarContent?.classList.contains('hidden')) {
+                sidebarContent?.classList.remove('hidden');
+                sidebar?.classList.remove('w-0');
+                sidebar?.classList.add('w-48');
+            } else {
+                sidebarContent?.classList.add('hidden');
+                sidebar?.classList.remove('w-48');
+                sidebar?.classList.add('w-0');
+            }
+        }
+
+        function switchView(viewName) {
+            // Hide all views
+            document.getElementById('content-area').innerHTML = '';
+
+            // Create view content based on selection
+            let content = '';
+
+            switch(viewName) {
+                case 'table':
+                    content = createTableView();
+                    break;
+                case 'schedule':
+                    content = createScheduleView();
+                    break;
+                case 'goals':
+                    content = createGoalsView();
+                    break;
+                case 'daily':
+                    content = createDailyView();
+                    break;
+                case 'notes':
+                    content = createNotesView();
+                    break;
+                case 'lists':
+                    content = createListsView();
+                    break;
+            }
+
+            document.getElementById('content-area').innerHTML = content;
+            updateActiveButton(viewName);
+        }
+
+        function updateActiveButton(viewName) {
+            // Remove active state from all buttons
+            const buttons = document.querySelectorAll('.space-y-1 a');
+            buttons.forEach(button => {
+                button.classList.remove('text-white', 'bg-gradient-to-r', 'from-blue-600', 'to-blue-700', 'shadow-sm');
+                button.classList.add('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900');
+            });
+
+            // Add active state to selected button
+            const viewNames = {
+                'table': 'TABLE',
+                'schedule': 'SCHEDULE',
+                'goals': 'GOALS',
+                'daily': 'DAILY LOG',
+                'notes': 'NOTES',
+                'lists': 'LISTS'
+            };
+
+            buttons.forEach(button => {
+                if (button.textContent.trim() === viewNames[viewName]) {
+                    button.classList.remove('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900');
+                    button.classList.add('text-white', 'bg-gradient-to-r', 'from-blue-600', 'to-blue-700', 'shadow-sm');
+                }
+            });
+        }
+
+        function createTableView() {
+            return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
                     <div class="flex items-center space-x-3">
                         <span class="text-xs font-semibold text-slate-600">Data Management</span>
@@ -107,806 +189,218 @@
                                 <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 3</th>
                                 <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 4</th>
                                 <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 5</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 6</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 7</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 8</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 9</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 10</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 11</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 12</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 13</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 14</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 15</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 16</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 17</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 18</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 19</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 20</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 21</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 22</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 23</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 24</th>
-                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Field 25</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
-                            </tr>
-                            <tr class="bg-slate-50 hover:bg-slate-100">
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">1</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">2</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">3</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">4</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">5</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">6</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">7</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">8</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">9</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">10</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">11</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">12</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">13</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">14</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">15</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">16</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">17</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">18</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">19</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">20</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">21</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">22</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">23</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">24</td>
-                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100 hover:bg-slate-50">25</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Data 1</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Data 2</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Data 3</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Data 4</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Data 5</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const sidebarContent = document.querySelector('.sidebar-content');
-            if (sidebarContent?.classList.contains('hidden')) {
-                sidebarContent?.classList.remove('hidden');
-                sidebar?.classList.remove('w-0');
-                sidebar?.classList.add('w-48');
-            } else {
-                sidebarContent?.classList.add('hidden');
-                sidebar?.classList.remove('w-48');
-                sidebar?.classList.add('w-0');
-            }
+            `;
         }
 
-          </script>
-</body>
-</html>
+        function createScheduleView() {
+            return `
+                <div class="bg-gradient-to-r from-blue-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-blue-600">Schedule Management</span>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150">Week</button>
+                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150">Month</button>
+                            <button class="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-100 px-2 py-0.5 rounded transition-colors duration-150">Year</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-slate-500">7 days</span>
+                        <div class="w-px h-4 bg-slate-300"></div>
+                        <span class="text-xs text-slate-500">24 hours</span>
+                    </div>
+                </div>
+                <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
+                    <table class="border-collapse table-auto">
+                        <thead>
+                            <tr>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-blue-100 to-blue-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Time</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-blue-100 to-blue-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Monday</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-blue-100 to-blue-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Tuesday</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-blue-100 to-blue-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Wednesday</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-blue-100 to-blue-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Thursday</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-blue-100 to-blue-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Friday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white hover:bg-blue-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">9:00 AM</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Team Meeting</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Project Review</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Client Call</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Development</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Testing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function createGoalsView() {
+            return `
+                <div class="bg-gradient-to-r from-green-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-green-600">Goals Tracker</span>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-colors duration-150">Add Goal</button>
+                            <button class="text-xs font-medium text-green-600 hover:text-green-700 hover:bg-green-100 px-2 py-0.5 rounded transition-colors duration-150">Progress</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-slate-500">5 active</span>
+                        <div class="w-px h-4 bg-slate-300"></div>
+                        <span class="text-xs text-slate-500">3 completed</span>
+                    </div>
+                </div>
+                <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
+                    <table class="border-collapse table-auto">
+                        <thead>
+                            <tr>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-green-100 to-green-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Goal</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-green-100 to-green-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Category</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-green-100 to-green-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Target</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-green-100 to-green-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white hover:bg-green-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Complete Project</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Work</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Dec 31</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">75%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function createDailyView() {
+            return `
+                <div class="bg-gradient-to-r from-orange-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-orange-600">Daily Log</span>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-colors duration-150">Today</button>
+                            <button class="text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-100 px-2 py-0.5 rounded transition-colors duration-150">Search</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-slate-500">3 entries</span>
+                        <div class="w-px h-4 bg-slate-300"></div>
+                        <span class="text-xs text-slate-500">Today</span>
+                    </div>
+                </div>
+                <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
+                    <table class="border-collapse table-auto">
+                        <thead>
+                            <tr>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-orange-100 to-orange-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Date</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-orange-100 to-orange-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Activity</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-orange-100 to-orange-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white hover:bg-orange-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">2024-01-15</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Team Meeting</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Discussed Q1 goals</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function createNotesView() {
+            return `
+                <div class="bg-gradient-to-r from-purple-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-purple-600">Notes</span>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-colors duration-150">New Note</button>
+                            <button class="text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-100 px-2 py-0.5 rounded transition-colors duration-150">Categories</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-slate-500">12 notes</span>
+                        <div class="w-px h-4 bg-slate-300"></div>
+                        <span class="text-xs text-slate-500">3 categories</span>
+                    </div>
+                </div>
+                <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
+                    <table class="border-collapse table-auto">
+                        <thead>
+                            <tr>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-purple-100 to-purple-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Title</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-purple-100 to-purple-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Category</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-purple-100 to-purple-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Content</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white hover:bg-purple-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Project Ideas</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Work</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Mobile app for task management</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function createListsView() {
+            return `
+                <div class="bg-gradient-to-r from-pink-50 to-white border-b border-slate-200 px-3 py-1.5 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-pink-600">Lists</span>
+                        <div class="flex items-center space-x-1">
+                            <button class="text-xs font-medium text-pink-600 hover:text-pink-700 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">Create List</button>
+                            <button class="text-xs font-medium text-pink-600 hover:text-pink-700 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors duration-150">Archive</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-slate-500">4 lists</span>
+                        <div class="w-px h-4 bg-slate-300"></div>
+                        <span class="text-xs text-slate-500">28 items</span>
+                    </div>
+                </div>
+                <div class="overflow-auto bg-white" style="width: 1400px; height: 756px;">
+                    <table class="border-collapse table-auto">
+                        <thead>
+                            <tr>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">List Name</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Items</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Completed</th>
+                                <th class="text-left text-xs font-semibold text-slate-700 whitespace-nowrap px-2 py-2 bg-gradient-to-b from-pink-100 to-pink-50 border-b border-slate-300 sticky top-0 z-10 shadow-sm">Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white hover:bg-pink-50">
+                                <td class="text-left text-xs font-medium text-slate-700 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">Shopping List</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">8</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">5</td>
+                                <td class="text-left text-xs text-slate-600 whitespace-nowrap px-2 py-1.5 border-b border-slate-100">63%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Load table view by default
+        switchView('table');
+    </script>
