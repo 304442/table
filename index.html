@@ -117,12 +117,7 @@
                             <tr>
                                 <th class="text-xs font-medium text-slate-700 px-2 py-1 text-left border border-slate-300 bg-slate-100">Week</th>
                                 <th class="text-xs font-medium text-slate-700 px-2 py-1 text-left border border-slate-300 bg-slate-100">City</th>
-                                <th class="text-xs font-medium text-slate-700 px-1 py-1 text-center border border-slate-300 bg-slate-100">F</th>
-                                <th class="text-xs font-medium text-slate-700 px-1 py-1 text-center border border-slate-300 bg-slate-100">D</th>
-                                <th class="text-xs font-medium text-slate-700 px-1 py-1 text-center border border-slate-300 bg-slate-100">A</th>
-                                <th class="text-xs font-medium text-slate-700 px-1 py-1 text-center border border-slate-300 bg-slate-100">M</th>
-                                <th class="text-xs font-medium text-slate-700 px-1 py-1 text-center border border-slate-300 bg-slate-100">I</th>
-                                <th class="text-xs font-medium text-slate-700 px-1 py-1 text-center border border-slate-300 bg-slate-100">Q</th>
+                                <th class="text-xs font-medium text-slate-700 px-2 py-1 text-left border border-slate-300 bg-slate-100">Prayer Times</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,40 +138,32 @@
                                         <option>Chicago</option>
                                     </select>
                                 </td>
-                                <td class="border border-slate-300 px-1 py-1 text-center">
-                                    <div class="flex items-center justify-center space-x-0">
-                                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">F</button>
-                                        <input type="time" class="text-xs text-slate-900 border-0 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 bg-white text-center">
-                                    </div>
-                                </td>
-                                <td class="border border-slate-300 px-1 py-1 text-center">
-                                    <div class="flex items-center justify-center space-x-0">
-                                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">D</button>
-                                        <input type="time" class="text-xs text-slate-900 border-0 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 bg-white text-center">
-                                    </div>
-                                </td>
-                                <td class="border border-slate-300 px-1 py-1 text-center">
-                                    <div class="flex items-center justify-center space-x-0">
-                                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">A</button>
-                                        <input type="time" class="text-xs text-slate-900 border-0 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 bg-white text-center">
-                                    </div>
-                                </td>
-                                <td class="border border-slate-300 px-1 py-1 text-center">
-                                    <div class="flex items-center justify-center space-x-0">
-                                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">M</button>
-                                        <input type="time" class="text-xs text-slate-900 border-0 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 bg-white text-center">
-                                    </div>
-                                </td>
-                                <td class="border border-slate-300 px-1 py-1 text-center">
-                                    <div class="flex items-center justify-center space-x-0">
-                                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">I</button>
-                                        <input type="time" class="text-xs text-slate-900 border-0 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 bg-white text-center">
-                                    </div>
-                                </td>
-                                <td class="border border-slate-300 px-1 py-1 text-center">
-                                    <div class="flex items-center justify-center space-x-0">
-                                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">Q</button>
-                                        <input type="time" class="text-xs text-slate-900 border-0 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 bg-white text-center">
+                                <td class="border border-slate-300 px-2 py-1">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <div class="flex items-center space-x-1">
+                                            <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">F</button>
+                                            <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-16 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">D</button>
+                                            <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-16 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">A</button>
+                                            <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-16 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">M</button>
+                                            <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-16 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">I</button>
+                                            <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-16 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200">Q</button>
+                                            <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-16 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
