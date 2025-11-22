@@ -9,7 +9,7 @@
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-8">
     <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white" style="max-width: 100vw; overflow-x: hidden; height: 800px; width: 100vw; max-width: 1400px;">
         <!-- Tab Bar -->
-        <div class="bg-slate-100 px-1 py-1">
+        <div class="bg-slate-100 px-1">
             <div class="flex items-center">
                 <!-- Navigation Tabs -->
                 <div class="flex">
@@ -19,7 +19,7 @@
                     <button onclick="switchView('notes')" id="tab-notes" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📋 NOTES</button>
                     <button onclick="switchView('lists')" id="tab-lists" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📚 LISTS</button>
                     <button onclick="switchView('table')" id="tab-table" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📊 TABLE</button>
-                    <button onclick="addNewCollection()" class="text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-400 border-dashed px-2 py-1 transition-all duration-200" title="Add New Collection">+ NEW</button>
+                    <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-400 border-dashed transition-all duration-200">+ NEW</button>
                 </div>
                 <!-- Right Side - Actions -->
                 <div class="flex items-center space-x-1 ml-auto">
@@ -29,7 +29,7 @@
             </div>
         </div>
         <!-- Content Area -->
-        <div id="content-area" class="flex-1 overflow-auto bg-white border border-slate-300 transition-all duration-200" style="min-height: 0; margin-top: -1px;">
+        <div id="content-area" class="overflow-auto bg-white transition-all duration-200" style="height: calc(100% - 40px);">
             <!-- Dynamic content will be loaded here -->
         </div>
     </div>
@@ -913,11 +913,12 @@
             document.addEventListener('click', function(e) {
                 const target = e.target;
 
-                // Check if target is editable (TD or sidebar A)
+                // Check if target is editable (TD, sidebar A, or tab BUTTON)
                 const isEditableTD = target.tagName === 'TD' && !target.querySelector('input') && !target.querySelector('select');
                 const isEditableCollection = target.tagName === 'A' && target.closest('.space-y-1') && !target.querySelector('input') && !target.querySelector('select');
+                const isEditableTab = target.tagName === 'BUTTON' && target.id && target.id.startsWith('tab-') && target.id !== 'tab-new' && !target.querySelector('input') && !target.querySelector('select');
 
-                if (!isEditableTD && !isEditableCollection) {
+                if (!isEditableTD && !isEditableCollection && !isEditableTab) {
                     lastClicked = null;
                     return;
                 }
@@ -930,8 +931,9 @@
                     e.stopPropagation();
 
                     const isCollection = isEditableCollection;
-                    const element = isCollection ? target : target; // target is TD or A
-                    const currentText = isCollection ? target.textContent.trim() : target.innerText.trim();
+                    const isTab = isEditableTab;
+                    const element = target; // target is TD, A, or BUTTON
+                    const currentText = target.textContent.trim();
 
                     const rect = element.getBoundingClientRect();
                     const originalWidth = rect.width;
@@ -955,7 +957,7 @@
                     element.style.maxWidth = originalWidth + 'px';
                     element.style.height = originalHeight + 'px';
 
-                    if (isCollection) {
+                    if (isCollection || isTab) {
                         element.style.display = 'flex';
                         element.style.alignItems = 'center';
                     }
@@ -969,26 +971,26 @@
                     const inputStyle = `
                         width: ${originalWidth}px;
                         height: ${originalHeight}px;
-                        border: 2px solid ${isCollection ? '#ec4899' : '#60a5fa'};
-                        padding: ${isCollection ? '2px 6px' : '0'};
+                        border: 2px solid ${isTab ? '#3b82f6' : isCollection ? '#ec4899' : '#60a5fa'};
+                        padding: ${isTab || isCollection ? '2px 6px' : '0'};
                         margin: 0;
                         box-sizing: border-t border-box;
-                        font-size: ${isCollection ? '12px' : 'inherit'};
-                        font-weight: ${isCollection ? '500' : 'inherit'};
-                        text-align: ${isCollection ? 'left' : 'inherit'};
-                        background: ${isCollection ? '#fdf2f8' : '#eff6ff'};
+                        font-size: ${isTab || isCollection ? '12px' : 'inherit'};
+                        font-weight: ${isTab || isCollection ? '500' : 'inherit'};
+                        text-align: ${isTab || isCollection ? 'left' : 'inherit'};
+                        background: ${isTab ? '#dbeafe' : isCollection ? '#fdf2f8' : '#eff6ff'};
                         min-width: ${originalWidth}px;
                         max-width: ${originalWidth}px;
                         flex: none;
                         display: block;
-                        ${isCollection ? '' : 'font: inherit;'}
+                        ${isTab || isCollection ? '' : 'font: inherit;'}
                     `;
 
                     input.style.cssText = inputStyle;
 
                     // Handle special category columns for table cells
                     let useSelect = false;
-                    if (!isCollection) {
+                    if (!isCollection && !isTab) {
                         const tableHeader = element.parentElement.querySelector('th')?.innerText.trim() || '';
                         useSelect = tableHeader.toLowerCase().includes('categor') ||
                                    tableHeader.toLowerCase().includes('type') ||
@@ -1019,7 +1021,7 @@
                         });
                     } else {
                         editElement = input;
-                        editElement.className = element.className + ` ${isCollection ? 'bg-blue-50' : 'bg-blue-50'} outline-none border ${isCollection ? 'border-pink-300' : 'border-t border-slate-500'} rounded`;
+                        editElement.className = element.className + ` bg-blue-50 outline-none border ${isTab ? 'border-blue-300' : isCollection ? 'border-pink-300' : 'border-t border-slate-500'} rounded`;
                     }
 
                     element.innerHTML = '';
@@ -1033,9 +1035,11 @@
                     function saveEdit() {
                         const newText = editElement.value || editElement.options[editElement.selectedIndex]?.text || currentText;
 
-                        if (isCollection) {
+                        if (isCollection || isTab) {
                             element.innerHTML = newText;
-                            element.setAttribute('onclick', `switchView('${getViewNameFromText(newText)}')`);
+                            if (isCollection) {
+                                element.setAttribute('onclick', `switchView('${getViewNameFromText(newText)}')`);
+                            }
                         } else {
                             element.innerText = newText;
                         }
@@ -1079,30 +1083,37 @@
         }
 
         function addNewCollection() {
-            const spaceDiv = document.querySelector('.space-y-1');
-            const addButton = spaceDiv.querySelector('button');
+            // Generate unique collection name
+            const collectionCount = document.querySelectorAll('button[id^="tab-"]').length - 1; // -1 to exclude NEW button
+            const collectionId = `collection_${Date.now()}`;
+            const collectionName = `Collection ${collectionCount}`;
 
-            // Create new collection link with placeholder text
-            const newCollection = document.createElement('a');
-            newCollection.href = '#';
-            newCollection.className = 'flex items-center px-1 py-1 leading-none text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-110';
-            newCollection.setAttribute('onclick', `switchView('new_collection')`);
-            newCollection.textContent = 'NEW COLLECTION';
+            // Create new tab element
+            const newTab = document.createElement('button');
+            newTab.id = `tab-${collectionId}`;
+            newTab.className = 'text-xs font-bold px-3 py-1.5 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors';
+            newTab.textContent = collectionName;
+            newTab.onclick = () => switchView(collectionId);
 
-            // Insert before the + button
-            spaceDiv.insertBefore(newCollection, addButton);
+            // Insert new tab before the +NEW button
+            const tabsContainer = document.querySelector('.flex.items-center > .flex'); // Container with tabs
+            const newButton = document.getElementById('tab-new');
+            tabsContainer.insertBefore(newTab, newButton);
 
-            // Switch to the new collection and trigger editing immediately
-            switchView('new_collection');
-            updateActiveButton('new_collection');
+            // Switch to the new collection
+            switchView(collectionId);
 
-            // Trigger double-click edit on the new collection after a short delay
+            // Immediately start editing the collection name
             setTimeout(() => {
-                const event = new MouseEvent('click', { bubbles: true });
-                newCollection.dispatchEvent(event);
-                setTimeout(() => {
-                    newCollection.dispatchEvent(event);
-                }, 50);
+                const editableName = document.querySelector('.text-slate-900');
+                if (editableName) {
+                    editableName.textContent = collectionName;
+                    editableName.setAttribute('onclick', `switchView('${collectionId}')`);
+
+                    // Trigger edit mode for immediate renaming
+                    const event = new MouseEvent('dblclick', { bubbles: true });
+                    editableName.dispatchEvent(event);
+                }
             }, 100);
         }
 
