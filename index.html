@@ -11,7 +11,8 @@
   <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white h-screen w-screen">
 <div class="bg-slate-100 px-1 flex-shrink-0">
 <div class="flex items-center overflow-x-auto">
-<div class="flex flex-shrink-0">
+<!-- Fixed: Added IDs to container for easier selection if needed, ensured classes match active state logic -->
+<div class="flex flex-shrink-0" id="tabs-container">
                     <button onclick="switchView('schedule')" id="tab-schedule" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📅 SCHEDULE</button>
                     <button onclick="switchView('goals')" id="tab-goals" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">🎯 GOALS</button>
                     <button onclick="switchView('daily')" id="tab-daily" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📝 DAILY</button>
@@ -32,52 +33,40 @@
 
     <script>
         const c=document.getElementById('content-area');
+        
         function switchView(viewName) {
             c.innerHTML = '';
             let content = '';
 
-    switch(viewName) {
-            case 'table':
-                content = createTableView();
-                break;
-            case 'schedule':
-                content = createScheduleView();
-                break;
-            case 'goals':
-                content = createGoalsView();
-                break;
-            case 'daily':
-                content = createDailyView();
-                break;
-            case 'notes':
-                content = createNotesView();
-                break;
-            case 'lists':
-                content = createListsView();
-                break;
-            default:
-                content = createDefaultView(viewName);
-                break;
+            switch(viewName) {
+                case 'table': content = createTableView(); break;
+                case 'schedule': content = createScheduleView(); break;
+                case 'goals': content = createGoalsView(); break;
+                case 'daily': content = createDailyView(); break;
+                case 'notes': content = createNotesView(); break;
+                case 'lists': content = createListsView(); break;
+                default: content = createDefaultView(viewName); break;
+            }
+
+            c.innerHTML = content;
+            updateActiveTab(viewName);
         }
 
-        c.innerHTML = content;
-        updateActiveTab(viewName);
-    }
-
         function updateActiveTab(viewName) {
-            // Reset all tabs
-            const allTabs = ['schedule', 'goals', 'daily', 'notes', 'lists', 'table'];
-            allTabs.forEach(tabId => {
-                const tab = document.getElementById(`tab-${tabId}`);
-                if (tab) {
-                    tab.className = 'text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors';
-                }
+            // FIX: Select tabs dynamically so new collections work
+            const allTabs = document.querySelectorAll('button[id^="tab-"]:not(#tab-new)');
+            
+            allTabs.forEach(tab => {
+                // Reset to inactive style
+                tab.className = 'text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]';
+                tab.style.borderBottom = '1px solid transparent';
             });
 
             // Set active tab
             const activeTab = document.getElementById(`tab-${viewName}`);
             if (activeTab) {
-                activeTab.className = 'text-xs font-bold px-3 py-1.5 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors';
+                activeTab.className = 'text-xs font-bold px-3 py-1.5 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors -mr-[1px]';
+                activeTab.style.borderBottom = 'none';
             }
         }
 
@@ -85,32 +74,39 @@
             const tbody = document.querySelector('#content-area tbody');
             if (!tbody) return;
 
-            const viewColors = {
-                'from-slate-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50']
-            };
+            // FIX: Clone the last row instead of creating empty generic cells. 
+            // This preserves inputs for Schedule view and structure for Lists view.
+            const existingRows = tbody.querySelectorAll('tr');
+            if (existingRows.length === 0) return;
 
-            const currentView = document.querySelector('[class*="from-slate-50"]');
-            const rowCount = tbody.querySelectorAll('tr').length;
-            const newRowIndex = rowCount + 1;
-            const isEven = newRowIndex % 2 === 0;
+            const lastRow = existingRows[existingRows.length - 1];
+            const newRow = lastRow.cloneNode(true);
 
-            let bgClass;
-            if (currentView) {
-                const viewClass = Array.from(currentView.classList).find(c => viewColors[c]);
-                bgClass = viewColors[viewClass] ? viewColors[viewClass][isEven ? 0 : 1] : viewColors['from-slate-50'][isEven ? 0 : 1];
+            // Clean up data in the new row
+            newRow.querySelectorAll('td').forEach(td => {
+                const input = td.querySelector('input');
+                if (input) {
+                    input.value = ''; // Reset inputs
+                } else if (!td.querySelector('select')) {
+                    // Clear text if it's a content cell, but be careful with labels
+                    // If the cell has specific classes suggesting it's a header/label, maybe keep it or set default
+                    if (td.classList.contains('td') || td.innerText.length > 20) {
+                        // Simple heuristic: if it was a long text (like description), clear it
+                        td.innerText = '';
+                    }
+                }
+            });
+
+            // Toggle Background Colors
+            const isEven = (existingRows.length + 1) % 2 === 0;
+            newRow.classList.remove('bg-white', 'hover:bg-slate-50', 'bg-blue-50', 'hover:bg-blue-100');
+            if (isEven) {
+                newRow.classList.add('bg-blue-50', 'hover:bg-blue-100');
             } else {
-                bgClass = isEven ? 'bg-blue-50 hover:bg-blue-100' : 'bg-white hover:bg-slate-50';
+                newRow.classList.add('bg-white', 'hover:bg-slate-50');
             }
 
-            const columnCount = document.querySelectorAll('#content-area th').length;
-
-            let newRowHTML = `<tr class="${bgClass}">`;
-            for (let j = 1; j <= columnCount; j++) {
-                newRowHTML += `<td class="text-center align-middle text-xs whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200"></td>`;
-            }
-            newRowHTML += '</tr>';
-
-            tbody.insertAdjacentHTML('beforeend', newRowHTML);
+            tbody.appendChild(newRow);
         }
 
         
@@ -221,7 +217,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+                <!-- FIXED: Removed extra closing div tag here that was breaking structure -->
                 <div class="flex-1 overflow-auto bg-white">
                     <div class="table-container">
                         <table class="border-collapse table-auto w">
@@ -517,7 +513,7 @@
                 <div class="flex-1 overflow-auto bg-white">
                     <div class="table-container">
                         <table class="border-collapse table-auto w">
-                        <thead>
+                      <thead>
                             <tr>
                                 <th class="th">Goal</th>
                                 <th class="th">Category</th>
@@ -619,6 +615,7 @@
         }
 
         function createListsView() {
+            // Added mx-1 to inputs to fix visual inconsistency
             return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2 m">
@@ -655,25 +652,25 @@
                                 <td class="td">TUESDAY - Upper/Legs</td>
                                 <td class="text-left align-middle text-xs text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">
                                     Incline Dumbbell Press,
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Barbell Squats,
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Dumbbell Row,
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Leg Curls,
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Superset: Incline Dumbbell Curls & Tricep Extensions
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                 </td>
                             </tr>
                                                         <tr class="bg-white hover:bg-slate-50 h">
@@ -681,25 +678,25 @@
                                 <td class="td">WEDNESDAY - Push/Pull</td>
                                 <td class="text-left align-middle text-xs text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">
                                     Barbell Bench Press
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Romanian Deadlifts
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Lat Pulldown
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Walking Lunges
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Superset: Cable Lateral Raises & Reverse Crunches
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                 </td>
                             </tr>
                             <tr class="bg-blue-50 hover:bg-blue-100 h">
@@ -707,25 +704,25 @@
                                 <td class="td">FRIDAY - Shoulders/Legs</td>
                                 <td class="text-left align-middle text-xs text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">
                                     Seated Dumbbell Shoulder Press
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Dumbbell Row
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Barbell Hip Thrust
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Leg Extensions
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Superset: Seated Chest Flyes & Calf Raises
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="kg" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                 </td>
                             </tr>
 
@@ -740,20 +737,20 @@
                                 <td class="td">UPPER BODY</td>
                                 <td class="text-left align-middle text-xs text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">
                                     Push Ups
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Pull Ups or Table Rows
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Pike Push Ups
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Dips
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Burpees
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                 </td>
                             </tr>
                             <!-- LOWER BODY EXERCISES -->
@@ -762,14 +759,14 @@
                                 <td class="td">LOWER BODY</td>
                                 <td class="text-left align-middle text-xs text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">
                                     Squats
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Lunges
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Hip bridges
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                 </td>
                             </tr>
 
@@ -779,20 +776,20 @@
                                 <td class="td">CORE & STRETCHING</td>
                                 <td class="text-left align-middle text-xs text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">
                                     Plank
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Side planks
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Dead bugs
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Bicycle crunches
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                     Mountain climbers
-                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
-                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center ml-0">
+                                    <input type="text" placeholder="sets" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
+                                    <input type="text" placeholder="reps" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-8 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-center mx-1">
                                 </td>
                             </tr>
 
@@ -898,27 +895,29 @@
             document.addEventListener('click', function(e) {
                 const target = e.target;
 
-                // Check if target is editable (TD, sidebar A, or tab BUTTON)
+                // Check if target is editable (TD, View Title, or Custom Tab)
                 const isEditableTD = target.tagName === 'TD' && !target.querySelector('input') && !target.querySelector('select');
-                const isEditableCollection = target.tagName === 'A' && target.closest('.space-y-1') && !target.querySelector('input') && !target.querySelector('select');
-                const isEditableTab = target.tagName === 'BUTTON' && target.id && target.id.startsWith('tab-') && target.id !== 'tab-new' && !target.querySelector('input') && !target.querySelector('select');
+                
+                // Allow editing the Title inside the View (span inside div inside bg-gradient)
+                const isEditableTitle = target.tagName === 'SPAN' && target.parentElement.classList.contains('m') && target.closest('.bg-gradient-to-r');
 
-                if (!isEditableTD && !isEditableCollection && !isEditableTab) {
+                // Allow editing custom tabs (buttons starting with tab- but not the default ones)
+                const defaultTabs = ['tab-schedule', 'tab-goals', 'tab-daily', 'tab-notes', 'tab-lists', 'tab-table', 'tab-new'];
+                const isEditableTab = target.tagName === 'BUTTON' && target.id && target.id.startsWith('tab-') && !defaultTabs.includes(target.id);
+
+                if (!isEditableTD && !isEditableTitle && !isEditableTab) {
                     lastClicked = null;
                     return;
                 }
 
                 // Double-click detection
                 if (lastClicked === target) {
-                    // This is a double click - proceed with editing
                     lastClicked = null;
                     e.preventDefault();
                     e.stopPropagation();
 
-                    const isCollection = isEditableCollection;
-                    const isTab = isEditableTab;
-                    const element = target; // target is TD, A, or BUTTON
-                    const currentText = target.textContent.trim();
+                    const element = target;
+                    const currentText = element.textContent.trim();
 
                     const rect = element.getBoundingClientRect();
                     const originalWidth = rect.width;
@@ -936,122 +935,65 @@
                     };
 
                     // Apply editing styles
-                    element.style.padding = '0';
-                    element.style.width = originalWidth + 'px';
-                    element.style.minWidth = originalWidth + 'px';
-                    element.style.maxWidth = originalWidth + 'px';
-                    element.style.height = originalHeight + 'px';
-
-                    if (isCollection || isTab) {
-                        element.style.display = 'flex';
-                        element.style.alignItems = 'center';
+                    if (!isEditableTab) {
+                        element.style.padding = '0';
+                        element.style.width = originalWidth + 'px';
+                        element.style.minWidth = originalWidth + 'px';
                     }
-
+                    
                     // Create input element
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = currentText;
-
-                    // Unified styling
-                    const inputStyle = `
-                        width: ${originalWidth}px;
-                        height: ${originalHeight}px;
-                        border: 2px solid ${isTab ? '#3b82f6' : isCollection ? '#ec4899' : '#60a5fa'};
-                        padding: ${isTab || isCollection ? '2px 6px' : '0'};
-                        margin: 0;
-                        box-sizing: border-box;
-                        font-size: ${isTab || isCollection ? '12px' : 'inherit'};
-                        font-weight: ${isTab || isCollection ? '500' : 'inherit'};
-                        text-align: ${isTab || isCollection ? 'left' : 'inherit'};
-                        background: ${isTab ? '#dbeafe' : isCollection ? '#fdf2f8' : '#eff6ff'};
-                        min-width: ${originalWidth}px;
-                        max-width: ${originalWidth}px;
-                        flex: none;
-                        display: block;
-                        ${isTab || isCollection ? '' : 'font: inherit;'}
-                    `;
-
-                    input.style.cssText = inputStyle;
-
-                    // Handle special category columns for table cells
-                    let useSelect = false;
-                    if (!isCollection && !isTab) {
-                        const tableHeader = element.parentElement.querySelector('th')?.innerText.trim() || '';
-                        useSelect = tableHeader.toLowerCase().includes('categor') ||
-                                   tableHeader.toLowerCase().includes('type') ||
-                                   tableHeader.toLowerCase().includes('status') ||
-                                   currentText === 'Work' || currentText === 'Personal' ||
-                                   currentText === 'Urgent' || currentText === 'Normal';
-                    }
-
-                    let editElement;
-                    if (useSelect) {
-                        editElement = document.createElement('select');
-                        editElement.className = element.className + ' bg-blue-50 outline-none cursor-pointer';
-                        editElement.style.cssText = inputStyle;
-
-                        // Add options
-                        const options = (currentText === 'Work' || currentText === 'Personal')
-                            ? ['Work', 'Personal']
-                            : (currentText === 'Urgent' || currentText === 'Normal')
-                            ? ['Urgent', 'Normal']
-                            : ['Work', 'Personal', 'Urgent', 'Normal'];
-
-                        options.forEach(option => {
-                            const opt = document.createElement('option');
-                            opt.value = option;
-                            opt.textContent = option;
-                            opt.selected = option === currentText;
-                            editElement.appendChild(opt);
-                        });
+                    
+                    // Tailwind styling for input
+                    input.className = 'bg-blue-50 outline-none border border-blue-400 text-xs text-slate-900 px-1';
+                    if (isEditableTab) {
+                        input.className += ' font-bold text-center rounded';
+                        input.style.width = (originalWidth + 20) + 'px'; // slightly wider for editing
                     } else {
-                        editElement = input;
-                        editElement.className = element.className + ` bg-blue-50 outline-none border ${isTab ? 'border-blue-300' : isCollection ? 'border-pink-300' : 'border-t border-slate-500'} rounded`;
+                        input.style.width = '100%';
+                        input.style.height = '100%';
                     }
 
                     element.innerHTML = '';
-                    element.appendChild(editElement);
-                    editElement.focus();
-                    if (editElement.tagName === 'INPUT') {
-                        editElement.select();
-                    }
+                    element.appendChild(input);
+                    input.focus();
+                    input.select();
 
                     // Save function
                     function saveEdit() {
-                        const newText = editElement.value || editElement.options[editElement.selectedIndex]?.text || currentText;
+                        const newText = input.value.trim() || currentText;
 
-                        if (isCollection || isTab) {
-                            element.innerHTML = newText;
-                            if (isCollection) {
-                                element.setAttribute('onclick', `switchView('${getViewNameFromText(newText)}')`);
-                            }
+                        if (isEditableTab) {
+                            // Only update text content, do NOT change ID or OnClick
+                            // This ensures navigation remains intact
+                            element.textContent = newText;
                         } else {
-                            element.innerText = newText;
+                            element.innerHTML = newText;
                         }
 
                         // Restore original styles
-                        Object.keys(originalStyles).forEach(prop => {
-                            element.style[prop] = originalStyles[prop];
-                        });
-                    }
-
-                    editElement.addEventListener('blur', saveEdit);
-                    editElement.addEventListener('keydown', function(event) {
-                        if (event.key === 'Enter') {
-                            saveEdit();
-                            if (isCollection) {
-                                const viewName = getViewNameFromText(editElement.value || currentText);
-                                setTimeout(() => switchView(viewName), 10);
-                            }
-                        }
-                        if (event.key === 'Escape') {
-                            element.innerHTML = currentText;
-                            if (isCollection) {
-                                element.setAttribute('onclick', `switchView('${getViewNameFromText(currentText)}')`);
-                            }
+                        if(!isEditableTab) {
                             Object.keys(originalStyles).forEach(prop => {
                                 element.style[prop] = originalStyles[prop];
                             });
+                        }
+                    }
+
+                    input.addEventListener('blur', saveEdit);
+                    input.addEventListener('keydown', function(event) {
+                        if (event.key === 'Enter') {
+                            saveEdit();
+                            input.blur();
+                        }
+                        if (event.key === 'Escape') {
+                            element.innerHTML = currentText;
+                            if(!isEditableTab) {
+                                Object.keys(originalStyles).forEach(prop => {
+                                    element.style[prop] = originalStyles[prop];
+                                });
+                            }
                         }
                     });
 
@@ -1069,51 +1011,23 @@
 
         function addNewCollection() {
             // Generate unique collection name
-            const collectionCount = document.querySelectorAll('button[id^="tab-"]').length - 1; // -1 to exclude NEW button
             const collectionId = `collection_${Date.now()}`;
-            const collectionName = `Collection ${collectionCount}`;
+            const collectionName = `New Collection`;
 
             // Create new tab element
             const newTab = document.createElement('button');
             newTab.id = `tab-${collectionId}`;
-            newTab.className = 'text-xs font-bold px-3 py-1.5 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors';
+            newTab.className = 'text-xs font-bold px-3 py-1.5 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors -mr-[1px]';
             newTab.textContent = collectionName;
             newTab.onclick = () => switchView(collectionId);
 
             // Insert new tab before the +NEW button
-            const tabsContainer = document.querySelector('.flex.items-center > .flex'); // Container with tabs
+            const tabsContainer = document.getElementById('tabs-container');
             const newButton = document.getElementById('tab-new');
             tabsContainer.insertBefore(newTab, newButton);
 
             // Switch to the new collection
             switchView(collectionId);
-
-            // Immediately start editing the collection name
-            setTimeout(() => {
-                const editableName = document.querySelector('.text-slate-900');
-                if (editableName) {
-                    editableName.textContent = collectionName;
-                    editableName.setAttribute('onclick', `switchView('${collectionId}')`);
-
-                    // Trigger edit mode for immediate renaming
-                    const event = new MouseEvent('dblclick', { bubbles: true });
-                    editableName.dispatchEvent(event);
-                }
-            }, 100);
-        }
-
-        function getViewNameFromText(text) {
-            const textUpper = text.toUpperCase().trim();
-            const viewMap = {
-                'TABLE': 'table',
-                'SCHEDULE': 'schedule',
-                'GOALS': 'goals',
-                'DAILY LOG': 'daily',
-                'DAILY': 'daily',
-                'NOTES': 'notes',
-                'LISTS': 'lists'
-            };
-            return viewMap[textUpper] || text.toLowerCase().replace(/\s+/g, '_');
         }
 
         // Load schedule view by default
