@@ -770,17 +770,19 @@
             document.addEventListener('click', function(e) {
                 const target = e.target;
 
-                // Check if target is editable (TD, View Title, or Custom Tab)
+                // Check if target is editable (TD, View Title, Tab, or Header)
                 const isEditableTD = target.tagName === 'TD' && !target.querySelector('input') && !target.querySelector('select');
-                
+
                 // Allow editing the Title inside the View (span inside div inside bg-gradient)
                 const isEditableTitle = target.tagName === 'SPAN' && target.parentElement.classList.contains('m') && target.closest('.bg-gradient-to-r');
 
-                // Allow editing custom tabs (buttons starting with tab- but not the default ones)
-                const defaultTabs = ['tab-schedule', 'tab-goals', 'tab-daily', 'tab-notes', 'tab-lists', 'tab-new'];
-                const isEditableTab = target.tagName === 'BUTTON' && target.id && target.id.startsWith('tab-') && !defaultTabs.includes(target.id);
+                // Allow editing ALL tabs (including default ones) - except NEW button
+                const isEditableTab = target.tagName === 'BUTTON' && target.id && target.id.startsWith('tab-') && target.id !== 'tab-new';
 
-                if (!isEditableTD && !isEditableTitle && !isEditableTab) {
+                // Allow editing table headers (TH elements)
+                const isEditableHeader = target.tagName === 'TH' && target.classList.contains('th');
+
+                if (!isEditableTD && !isEditableTitle && !isEditableTab && !isEditableHeader) {
                     lastClicked = null;
                     return;
                 }
@@ -810,22 +812,26 @@
                     };
 
                     // Apply editing styles
-                    if (!isEditableTab) {
+                    if (!isEditableTab && !isEditableHeader) {
                         element.style.padding = '0';
                         element.style.width = originalWidth + 'px';
                         element.style.minWidth = originalWidth + 'px';
                     }
-                    
+
                     // Create input element
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = currentText;
-                    
+
                     // Tailwind styling for input
                     input.className = 'bg-blue-50 outline-none border border-blue-400 text-xs text-slate-900 px-1';
                     if (isEditableTab) {
                         input.className += ' font-bold text-center rounded';
                         input.style.width = (originalWidth + 20) + 'px'; // slightly wider for editing
+                    } else if (isEditableHeader) {
+                        input.className += ' font-semibold text-center';
+                        input.style.width = '100%';
+                        input.style.height = '100%';
                     } else {
                         input.style.width = '100%';
                         input.style.height = '100%';
@@ -849,7 +855,7 @@
                         }
 
                         // Restore original styles
-                        if(!isEditableTab) {
+                        if (!isEditableTab && !isEditableHeader) {
                             Object.keys(originalStyles).forEach(prop => {
                                 element.style[prop] = originalStyles[prop];
                             });
@@ -864,7 +870,7 @@
                         }
                         if (event.key === 'Escape') {
                             element.innerHTML = currentText;
-                            if(!isEditableTab) {
+                            if(!isEditableTab && !isEditableHeader) {
                                 Object.keys(originalStyles).forEach(prop => {
                                     element.style[prop] = originalStyles[prop];
                                 });
