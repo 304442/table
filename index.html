@@ -7,12 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-8">
-    <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white" style="max-width: 100vw; overflow-x: hidden; height: 800px; width: 100vw; max-width: 1400px;">
-        <!-- Tab Bar -->
-        <div class="bg-slate-100 px-1">
-            <div class="flex items-center">
+    <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white" style="max-width: 100vw; height: 800px; width: 100vw; max-width: 1400px;">
+        <!-- Tab Bar - Fixed at top -->
+        <div class="bg-slate-100 px-1 flex-shrink-0">
+            <div class="flex items-center overflow-x-auto">
                 <!-- Navigation Tabs -->
-                <div class="flex">
+                <div class="flex flex-shrink-0">
                     <button onclick="switchView('schedule')" id="tab-schedule" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📅 SCHEDULE</button>
                     <button onclick="switchView('goals')" id="tab-goals" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">🎯 GOALS</button>
                     <button onclick="switchView('daily')" id="tab-daily" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📝 DAILY</button>
@@ -22,13 +22,13 @@
                     <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-400 border-dashed transition-all duration-200">+ NEW</button>
                 </div>
                 <!-- Right Side - Actions -->
-                <div class="flex items-center space-x-1 ml-auto">
+                <div class="flex items-center space-x-1 ml-auto flex-shrink-0">
                     <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1">🔄 Sync</button>
                     <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1">🚪 Logout</button>
                 </div>
             </div>
         </div>
-        <!-- Content Area -->
+        <!-- Content Area - Scrollable content -->
         <div id="content-area" class="overflow-auto bg-white transition-all duration-200" style="height: calc(100% - 40px);">
             <!-- Dynamic content will be loaded here -->
         </div>
@@ -171,8 +171,8 @@
 
         function createScheduleView() {
             return `
-                <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 flex items-center justify-between shadow-sm flex-shrink-0">
-                    <div class="flex items-center space-x-2">
+                <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
+                    <div class="flex items-center space-x-2" style="min-width: max-content;">
                         <span class="text-xs font-semibold text-slate-900">Daily Schedule Planner</span>
                         <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Activity</button>
                         <div class="flex items-center space-x-1">
@@ -180,15 +180,15 @@
                             <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Month</button>
                             <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Year</button>
                         </div>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs text-slate-900">7 days</span>
-                        <div class="w-px h-4 bg-slate-300"></div>
-                        <span class="text-xs text-slate-900">15 activities</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-slate-900">7 days</span>
+                            <div class="w-px h-4 bg-slate-300"></div>
+                            <span class="text-xs text-slate-900">15 activities</span>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-gradient-to-r from-slate-50/50 to-white border-t border-b border-slate-200/80 px-1 py-1 leading-none flex items-center justify-between flex-shrink-0">
-                    <div class="flex items-center space-x-2 overflow-x-auto" style="min-width: 0;">
+                <div class="bg-gradient-to-r from-slate-50/50 to-white border-t border-b border-slate-200/80 px-1 py-1 leading-none overflow-x-auto whitespace-nowrap flex-shrink-0">
+                    <div class="flex items-center space-x-2" style="min-width: max-content;">
                         <select class="text-xs font-normal text-slate-900 bg-white border border-slate-300 rounded px-0 py-0 hover:bg-slate-50 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-t border-blue-500 transition-all duration-200 flex-shrink-0">
                             <option>Select Week</option>
                             <option>Week 1</option>
@@ -203,7 +203,7 @@
                         </select>
                        <div class="border border-slate-300 rounded px-0 py-0 bg-white flex items-center space-x-1 flex-shrink-0">
                             <span class="text-xs font-medium text-slate-900 whitespace-nowrap overflow-hidden px-1">Prayer Times</span>
-                            <div class="flex items-center space-x-0 overflow-x-auto">
+                            <div class="flex items-center space-x-0">
                                 <div class="flex items-center space-x-0 flex-shrink-0">
                                     <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">F</button>
                                     <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
@@ -231,6 +231,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="flex-1 overflow-auto bg-white">
                     <div class="table-container">
