@@ -18,8 +18,7 @@
                     <button onclick="switchView('daily')" id="tab-daily" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📝 DAILY</button>
                     <button onclick="switchView('notes')" id="tab-notes" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📋 NOTES</button>
                     <button onclick="switchView('lists')" id="tab-lists" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📚 LISTS</button>
-                    <button onclick="switchView('table')" id="tab-table" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📊 TABLE</button>
-                    <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-300 border-dashed transition-all duration-200">+ NEW</button>
+                                        <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-300 border-dashed transition-all duration-200">+ NEW</button>
                 </div>
                 <div class="flex items-center space-x-1 ml-auto flex-shrink-0">
                     <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5" >🔄 Sync</button>
@@ -39,7 +38,6 @@
             let content = '';
 
             switch(viewName) {
-                case 'table': content = createTableView(); break;
                 case 'schedule': content = createScheduleView(); break;
                 case 'goals': content = createGoalsView(); break;
                 case 'daily': content = createDailyView(); break;
@@ -110,34 +108,7 @@
         }
 
         
-        function createTableView() {
-            return `
-                <div class="flex-1 overflow-auto bg-white">
-                    <div class="table-container">
-                        <table class="border-collapse table-auto w">
-                        <thead>
-                            <tr>
-                                ${Array.from({length: 25}, (_, i) =>
-                                    `<th class="th">Field ${i + 1}</th>`
-                                ).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${Array.from({length: 37}, (_, i) => {
-                                const bgClass = i % 2 === 0 ? 'bg-white hover:bg-slate-50' : 'bg-blue-50 hover:bg-blue-100';
-                                return `<tr class="${bgClass}" class="h">
-                                    ${Array.from({length: 25}, (_, j) =>
-                                        `<td class="text-left align-middle text-xs font-normal text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">${i * 25 + j + 1}</td>`
-                                    ).join('')}
-                                </tr>`;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-            `;
-        }
-
+        
         function createScheduleView() {
             return `
                 <div class="bg-slate-50 border border-slate-200 px-2 py-2 rounded-md flex-shrink-0 overflow-x-auto">
@@ -806,7 +777,7 @@
                 const isEditableTitle = target.tagName === 'SPAN' && target.parentElement.classList.contains('m') && target.closest('.bg-gradient-to-r');
 
                 // Allow editing custom tabs (buttons starting with tab- but not the default ones)
-                const defaultTabs = ['tab-schedule', 'tab-goals', 'tab-daily', 'tab-notes', 'tab-lists', 'tab-table', 'tab-new'];
+                const defaultTabs = ['tab-schedule', 'tab-goals', 'tab-daily', 'tab-notes', 'tab-lists', 'tab-new'];
                 const isEditableTab = target.tagName === 'BUTTON' && target.id && target.id.startsWith('tab-') && !defaultTabs.includes(target.id);
 
                 if (!isEditableTD && !isEditableTitle && !isEditableTab) {
