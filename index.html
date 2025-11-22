@@ -5,7 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Table</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>.h{height:28px}.w{width:100%}.m{min-width:max-content}.c{height:calc(100% - 48px)}.th{text-align:left;vertical-align:middle;font-size:.75rem;font-weight:600;color:#0f172a;white-space:nowrap;overflow:hidden;padding-left:0;padding-right:0;padding-top:.25rem;padding-bottom:.25rem;line-height:1;background:linear-gradient(to bottom,#f1f5f9,#e2e8f0);border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:10;box-shadow:0 1px 3px 0 rgba(0 0 0 / .1)}.tc{text-align:center;vertical-align:middle;font-size:.75rem;font-weight:600;color:#0f172a;white-space:nowrap;overflow:hidden;padding-left:0;padding-right:0;padding-top:.25rem;padding-bottom:.25rem;line-height:1;background:linear-gradient(to bottom,#f1f5f9,#e2e8f0);border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:10;box-shadow:0 1px 3px 0 rgba(0 0 0 / .1)}.td{text-align:left;vertical-align:middle;font-size:.75rem;font-weight:500;color:#0f172a;white-space:nowrap;overflow:hidden;padding-left:0;padding-right:0;padding-top:.25rem;padding-bottom:.25rem;line-height:1;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}.tdd{text-align:center;vertical-align:middle;font-size:.75rem;color:#0f172a;white-space:nowrap;overflow:hidden;padding-left:0;padding-right:0;padding-top:.25rem;padding-bottom:.25rem;line-height:1;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}</style>
+    <style>
+        .h {
+            height: 28px;
+        }
+        .w {
+            width: 100%;
+        }
+        .m {
+            min-width: max-content;
+        }
+        .c {
+            height: calc(100% - 48px);
+        }
+        .th {
+            text-align: left;
+            vertical-align: middle;
+            font-size: .75rem;
+            font-weight: 600;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            line-height: 1;
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 3px 0 rgba(0 0 0 / .1);
+        }
+        .tc {
+            text-align: center;
+            vertical-align: middle;
+            font-size: .75rem;
+            font-weight: 600;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            line-height: 1;
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 3px 0 rgba(0 0 0 / .1);
+        }
+        .td {
+            text-align: left;
+            vertical-align: middle;
+            font-size: .75rem;
+            font-weight: 500;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            line-height: 1;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .tdd {
+            text-align: center;
+            vertical-align: middle;
+            font-size: .75rem;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            line-height: 1;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
     </head>
 <body class="h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-0 m-0">
     <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white h-screen w-screen">
@@ -20,7 +106,7 @@
                     <button onclick="switchView('table')" id="tab-table" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📊 TABLE</button>
                     <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-300 border-dashed transition-all duration-200">+ NEW</button>
                 </div>
-                                <div class="flex items-center space-x-1 ml-auto flex-shrink-0">
+                <div class="flex items-center space-x-1 ml-auto flex-shrink-0">
                     <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5" aria-label="Sync data">🔄 Sync</button>
                     <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5" aria-label="Logout">🚪 Logout</button>
                 </div>
@@ -1122,3 +1208,5 @@
         switchView('schedule');
         makeEditable();
     </script>
+    </body>
+</html>
