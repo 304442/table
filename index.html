@@ -5,62 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Table</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .tab-button {
+            @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-b-2 border-transparent;
+        }
+        .tab-button.active {
+            @apply bg-blue-600 text-white hover:bg-blue-700 border-b-2 border-blue-600;
+        }
+    </style>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-8">
     <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white/95 backdrop-blur-sm" style="max-width: 100vw; overflow-x: hidden;">
-        <div class="flex" style="height: 800px; width: 100vw; max-width: 1400px;">
-            <div id="sidebar" class="w-48 bg-gradient-to-b from-slate-50 via-white to-white border-r border-slate-300/60 flex flex-col transition-all duration-200 ease-in-out">
-                <div class="p-2 flex-1 overflow-y-auto sidebar-content">
-                    <h2 class="text-xs font-semibold text-slate-900 mb-3 uppercase tracking-wide">Collections</h2>
-                    <div class="space-y-1">
-                        <a href="#" onclick="switchView('schedule')" class="flex items-center px-1 py-1 leading-none text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded shadow-sm hover:from-blue-700 hover:to-blue-800 transform transition-all duration-200 hover:scale-110">SCHEDULE</a>
-                        <a href="#" onclick="switchView('goals')" class="flex items-center px-1 py-1 leading-none text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-110">GOALS</a>
-                        <a href="#" onclick="switchView('daily')" class="flex items-center px-1 py-1 leading-none text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-110">DAILY LOG</a>
-                        <a href="#" onclick="switchView('notes')" class="flex items-center px-1 py-1 leading-none text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-110">NOTES</a>
-                        <a href="#" onclick="switchView('lists')" class="flex items-center px-1 py-1 leading-none text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-110">LISTS</a>
-                        <a href="#" onclick="switchView('table')" class="flex items-center px-1 py-1 leading-none text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded transition-all duration-200 transform hover:scale-110">TABLE</a>
-                        <button onclick="addNewCollection()" class="flex items-center justify-center px-1 py-1 leading-none text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-300/60 border-dashed rounded transition-all duration-200 transform hover:scale-110 w-full" title="Add New Collection">+</button>
+        <div class="flex flex-col" style="height: 800px; width: 100vw; max-width: 1400px;">
+            <!-- Tab Navigation -->
+            <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-300/60">
+                <div class="flex items-center justify-between px-2 py-1">
+                    <!-- Left Side - Navigation Tabs -->
+                    <div class="flex items-center space-x-1">
+                        <button onclick="switchView('schedule')" id="tab-schedule" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📅 SCHEDULE</button>
+                        <button onclick="switchView('goals')" id="tab-goals" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">🎯 GOALS</button>
+                        <button onclick="switchView('daily')" id="tab-daily" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📝 DAILY</button>
+                        <button onclick="switchView('notes')" id="tab-notes" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📋 NOTES</button>
+                        <button onclick="switchView('lists')" id="tab-lists" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📚 LISTS</button>
+                        <button onclick="switchView('table')" id="tab-table" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📊 TABLE</button>
+                        <button onclick="addNewCollection()" class="text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-300/60 border-dashed px-2 py-1 rounded-t-sm transition-all duration-200" title="Add New Collection">+ NEW</button>
+                    </div>
+                    <!-- Right Side - Actions -->
+                    <div class="flex items-center space-x-1">
+                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200">🔄 Sync</button>
+                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200">🚪 Logout</button>
                     </div>
                 </div>
             </div>
-            <div class="flex-1 flex flex-col" style="min-width: 0;">
-                <div class="bg-gradient-to-r from-white via-slate-50/30 to-white border-t border-b border-slate-300/60 px-1 py-1 leading-none flex items-center justify-between flex-shrink-0">
-                    <div class="flex items-center space-x-2 overflow-x-auto" style="min-width: 0;">
-                        <button onclick="toggleSidebar()" class="px-0 py-0 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center leading-none transition-all duration-200 hover:scale-110 flex-shrink-0" title="Toggle Sidebar">
-                            ☰
-                        </button>
-                    </div>
-                    <div class="flex items-center space-x-2 flex-shrink-0">
-                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200 whitespace-nowrap overflow-hidden">
-                            Sync
-                        </button>
-                                                <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-1 rounded transition-all duration-200 whitespace-nowrap overflow-hidden">
-                            Logout
-                        </button>
-                    </div>
-                </div>
-                <div id="content-area" class="flex-1 overflow-auto" style="min-height: 0;">
-                    <!-- Dynamic content will be loaded here -->
-                </div>
+            <!-- Content Area -->
+            <div id="content-area" class="flex-1 overflow-auto bg-white" style="min-height: 0;">
+                <!-- Dynamic content will be loaded here -->
             </div>
         </div>
     </div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const sidebarContent = document.querySelector('.sidebar-content');
-            if (sidebarContent?.classList.contains('hidden')) {
-                sidebarContent?.classList.remove('hidden');
-                sidebar?.classList.remove('w-0');
-                sidebar?.classList.add('w-48');
-            } else {
-                sidebarContent?.classList.add('hidden');
-                sidebar?.classList.remove('w-48');
-                sidebar?.classList.add('w-0');
-            }
-        }
-
         function switchView(viewName) {
             // Hide all views
             document.getElementById('content-area').innerHTML = '';
@@ -93,7 +77,21 @@
             }
 
             document.getElementById('content-area').innerHTML = content;
-            updateActiveButton(viewName);
+            updateActiveTab(viewName);
+        }
+
+        function updateActiveTab(viewName) {
+            // Remove active state from all tabs
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Add active state to selected tab
+            const activeTab = document.getElementById(`tab-${viewName}`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
         }
 
         function addNewRow() {
@@ -132,24 +130,7 @@
             tbody.insertAdjacentHTML('beforeend', newRowHTML);
         }
 
-        function updateActiveButton(viewName) {
-            // Remove active state from all buttons
-            const buttons = document.querySelectorAll('.space-y-1 a');
-            buttons.forEach(button => {
-                button.classList.remove('text-white', 'bg-gradient-to-r', 'from-blue-600', 'to-blue-700', 'shadow-sm');
-                button.classList.add('text-slate-900', 'hover:bg-slate-50', 'hover:text-slate-900');
-            });
-
-            // Add active state to selected button (supports custom names)
-            buttons.forEach(button => {
-                const buttonViewName = getViewNameFromText(button.textContent.trim());
-                if (buttonViewName === viewName) {
-                    button.classList.remove('text-slate-900', 'hover:bg-slate-50', 'hover:text-slate-900');
-                    button.classList.add('text-white', 'bg-gradient-to-r', 'from-blue-600', 'to-blue-700', 'shadow-sm');
-                }
-            });
-        }
-
+        
         function createTableView() {
             return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 leading-none flex items-center justify-between shadow-sm flex-shrink-0">
