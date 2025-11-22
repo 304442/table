@@ -5,42 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Table</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        .tab-button {
-            @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-b-2 border-transparent;
-        }
-        .tab-button.active {
-            @apply bg-blue-600 text-white hover:bg-blue-700 border-b-2 border-blue-600;
-        }
-    </style>
-</head>
+    </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 p-8">
-    <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white/95 backdrop-blur-sm" style="max-width: 100vw; overflow-x: hidden;">
-        <div class="flex flex-col" style="height: 800px; width: 100vw; max-width: 1400px;">
-            <!-- Tab Navigation -->
-            <div class="bg-gradient-to-r from-slate-50 to-white border-b border-slate-300/60">
-                <div class="flex items-center justify-between px-2 py-1">
-                    <!-- Left Side - Navigation Tabs -->
-                    <div class="flex items-center space-x-1">
-                        <button onclick="switchView('schedule')" id="tab-schedule" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📅 SCHEDULE</button>
-                        <button onclick="switchView('goals')" id="tab-goals" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">🎯 GOALS</button>
-                        <button onclick="switchView('daily')" id="tab-daily" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📝 DAILY</button>
-                        <button onclick="switchView('notes')" id="tab-notes" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📋 NOTES</button>
-                        <button onclick="switchView('lists')" id="tab-lists" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📚 LISTS</button>
-                        <button onclick="switchView('table')" id="tab-table" class="tab-button text-xs font-medium px-2 py-1 rounded-t-sm transition-all duration-200 whitespace-nowrap">📊 TABLE</button>
-                        <button onclick="addNewCollection()" class="text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-300/60 border-dashed px-2 py-1 rounded-t-sm transition-all duration-200" title="Add New Collection">+ NEW</button>
-                    </div>
-                    <!-- Right Side - Actions -->
-                    <div class="flex items-center space-x-1">
-                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200">🔄 Sync</button>
-                        <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200">🚪 Logout</button>
-                    </div>
+    <div class="relative shadow-lg overflow-hidden rounded-2xl border border-slate-300/60 bg-white" style="max-width: 100vw; overflow-x: hidden; height: 800px; width: 100vw; max-width: 1400px;">
+        <!-- Tab Bar -->
+        <div class="bg-slate-100 px-1 py-1">
+            <div class="flex items-center">
+                <!-- Navigation Tabs -->
+                <div class="flex">
+                    <button onclick="switchView('schedule')" id="tab-schedule" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📅 SCHEDULE</button>
+                    <button onclick="switchView('goals')" id="tab-goals" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">🎯 GOALS</button>
+                    <button onclick="switchView('daily')" id="tab-daily" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📝 DAILY</button>
+                    <button onclick="switchView('notes')" id="tab-notes" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📋 NOTES</button>
+                    <button onclick="switchView('lists')" id="tab-lists" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📚 LISTS</button>
+                    <button onclick="switchView('table')" id="tab-table" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📊 TABLE</button>
+                    <button onclick="addNewCollection()" class="text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-400 border-dashed px-2 py-1 transition-all duration-200" title="Add New Collection">+ NEW</button>
+                </div>
+                <!-- Right Side - Actions -->
+                <div class="flex items-center space-x-1 ml-auto">
+                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1">🔄 Sync</button>
+                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1">🚪 Logout</button>
                 </div>
             </div>
-            <!-- Content Area -->
-            <div id="content-area" class="flex-1 overflow-auto bg-white" style="min-height: 0;">
-                <!-- Dynamic content will be loaded here -->
-            </div>
+        </div>
+        <!-- Content Area -->
+        <div id="content-area" class="flex-1 overflow-auto bg-white border border-slate-300 transition-all duration-200" style="min-height: 0; margin-top: -1px;">
+            <!-- Dynamic content will be loaded here -->
         </div>
     </div>
 
@@ -81,16 +71,19 @@
         }
 
         function updateActiveTab(viewName) {
-            // Remove active state from all tabs
-            const tabs = document.querySelectorAll('.tab-button');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
+            // Reset all tabs
+            const allTabs = ['schedule', 'goals', 'daily', 'notes', 'lists', 'table'];
+            allTabs.forEach(tabId => {
+                const tab = document.getElementById(`tab-${tabId}`);
+                if (tab) {
+                    tab.className = 'text-xs font-medium px-3 py-1 whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors';
+                }
             });
 
-            // Add active state to selected tab
+            // Set active tab
             const activeTab = document.getElementById(`tab-${viewName}`);
             if (activeTab) {
-                activeTab.classList.add('active');
+                activeTab.className = 'text-xs font-bold px-3 py-1 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors';
             }
         }
 
