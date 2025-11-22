@@ -13,23 +13,23 @@
             <div class="flex items-center overflow-x-auto">
                 <!-- Navigation Tabs -->
                 <div class="flex flex-shrink-0">
-                    <button onclick="switchView('schedule')" id="tab-schedule" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📅 SCHEDULE</button>
-                    <button onclick="switchView('goals')" id="tab-goals" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">🎯 GOALS</button>
-                    <button onclick="switchView('daily')" id="tab-daily" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📝 DAILY</button>
-                    <button onclick="switchView('notes')" id="tab-notes" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📋 NOTES</button>
-                    <button onclick="switchView('lists')" id="tab-lists" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📚 LISTS</button>
-                    <button onclick="switchView('table')" id="tab-table" class="text-xs font-medium px-2 py-1 whitespace-nowrap bg-slate-200 border border-slate-400 text-slate-600 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📊 TABLE</button>
-                    <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-400 border-dashed transition-all duration-200">+ NEW</button>
+                    <button onclick="switchView('schedule')" id="tab-schedule" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📅 SCHEDULE</button>
+                    <button onclick="switchView('goals')" id="tab-goals" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">🎯 GOALS</button>
+                    <button onclick="switchView('daily')" id="tab-daily" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📝 DAILY</button>
+                    <button onclick="switchView('notes')" id="tab-notes" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📋 NOTES</button>
+                    <button onclick="switchView('lists')" id="tab-lists" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📚 LISTS</button>
+                    <button onclick="switchView('table')" id="tab-table" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-200 border border-slate-300 text-slate-700 hover:bg-slate-300 transition-all duration-200 -mr-[1px]" style="border-bottom: 1px solid transparent;">📊 TABLE</button>
+                    <button onclick="addNewCollection()" id="tab-new" class="text-xs font-medium px-3 py-1.5 whitespace-nowrap text-slate-500 hover:text-slate-700 hover:bg-slate-200 border border-slate-300 border-dashed transition-all duration-200">+ NEW</button>
                 </div>
                 <!-- Right Side - Actions -->
                 <div class="flex items-center space-x-1 ml-auto flex-shrink-0">
-                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1">🔄 Sync</button>
-                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1">🚪 Logout</button>
+                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5" aria-label="Sync data">🔄 Sync</button>
+                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5" aria-label="Logout">🚪 Logout</button>
                 </div>
             </div>
         </div>
         <!-- Content Area - Scrollable content -->
-        <div id="content-area" class="overflow-auto bg-white transition-all duration-200" style="height: calc(100% - 40px);">
+        <div id="content-area" class="overflow-auto bg-white transition-all duration-200" style="height: calc(100% - 48px);">
             <!-- Dynamic content will be loaded here -->
         </div>
     </div>
@@ -76,14 +76,14 @@
             allTabs.forEach(tabId => {
                 const tab = document.getElementById(`tab-${tabId}`);
                 if (tab) {
-                    tab.className = 'text-xs font-medium px-3 py-1 whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors';
+                    tab.className = 'text-xs font-medium px-3 py-1.5 whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors';
                 }
             });
 
             // Set active tab
             const activeTab = document.getElementById(`tab-${viewName}`);
             if (activeTab) {
-                activeTab.className = 'text-xs font-bold px-3 py-1 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors';
+                activeTab.className = 'text-xs font-bold px-3 py-1.5 whitespace-nowrap bg-white text-blue-600 border-b-2 border-blue-600 transition-colors';
             }
         }
 
@@ -92,14 +92,10 @@
             if (!tbody) return;
 
             const viewColors = {
-                'from-blue-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50'],
-                'from-blue-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50'],
-                'from-blue-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50'],
-                'from-blue-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50'],
-                'from-blue-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50']
+                'from-slate-50': ['bg-blue-50 hover:bg-blue-100', 'bg-white hover:bg-slate-50']
             };
 
-            const currentView = document.querySelector('[class*="from-blue-50"], [class*="from-blue-50"], [class*="from-blue-50"], [class*="from-blue-50"], [class*="from-blue-50"]');
+            const currentView = document.querySelector('[class*="from-slate-50"]');
             const rowCount = tbody.querySelectorAll('tr').length;
             const newRowIndex = rowCount + 1;
             const isEven = newRowIndex % 2 === 0;
@@ -107,7 +103,7 @@
             let bgClass;
             if (currentView) {
                 const viewClass = Array.from(currentView.classList).find(c => viewColors[c]);
-                bgClass = viewColors[viewClass] ? viewColors[viewClass][isEven ? 0 : 1] : viewColors['from-blue-50'][isEven ? 0 : 1];
+                bgClass = viewColors[viewClass] ? viewColors[viewClass][isEven ? 0 : 1] : viewColors['from-slate-50'][isEven ? 0 : 1];
             } else {
                 bgClass = isEven ? 'bg-blue-50 hover:bg-blue-100' : 'bg-white hover:bg-slate-50';
             }
@@ -116,7 +112,7 @@
 
             let newRowHTML = `<tr class="${bgClass}">`;
             for (let j = 1; j <= columnCount; j++) {
-                newRowHTML += `<td class="text-left align-middle text-xs whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200"></td>`;
+                newRowHTML += `<td class="text-center align-middle text-xs whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200"></td>`;
             }
             newRowHTML += '</tr>';
 
@@ -129,16 +125,16 @@
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
                         <span class="text-xs font-semibold text-slate-900">Data Management</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Row</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Row</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">View</button>
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Filter</button>
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Sort</button>
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Export</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">View</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Filter</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Sort</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Export</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">32 rows</span>
-                        <div class="w-px h-3 bg-slate-300/60"></div>
+                        <div class="w-px h-4 bg-slate-300"></div>
                         <span class="text-xs text-slate-900">25 columns</span>
                     </div>
                 </div>
@@ -148,7 +144,7 @@
                         <thead>
                             <tr>
                                 ${Array.from({length: 25}, (_, i) =>
-                                    `<th class="sticky top-0 z-20 bg-slate-100 text-left align-middle text-xs font-semibold text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-b-2 border-slate-300 shadow-sm">Field ${i + 1}</th>`
+                                    `<th class="sticky top-0 z-20 bg-slate-100 text-left align-middle text-xs font-semibold text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-300 shadow-sm">Field ${i + 1}</th>`
                                 ).join('')}
                             </tr>
                         </thead>
@@ -172,12 +168,12 @@
             return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
-                        <span class="text-xs font-semibold text-slate-900">Daily Schedule Planner</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Activity</button>
+                        <span class="text-xs font-semibold text-slate-900">DAILY SCHEDULE PLANNER</span>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Activity</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Week</button>
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Month</button>
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Year</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Week</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Month</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Year</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">7 days</span>
@@ -204,28 +200,28 @@
                             <span class="text-xs font-medium text-slate-900 whitespace-nowrap overflow-hidden px-1">Prayer Times</span>
                             <div class="flex items-center space-x-0">
                                 <div class="flex items-center space-x-0 flex-shrink-0">
-                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">F</button>
-                                    <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
+                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-0 rounded transition-all duration-200" aria-label="Fajr prayer time">F</button>
+                                    <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
                                 </div>
                                 <div class="flex items-center space-x-0 flex-shrink-0">
-                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">D</button>
-                                    <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
+                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-0 rounded transition-all duration-200" aria-label="Dhuhr prayer time">D</button>
+                                    <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
                                 </div>
                                 <div class="flex items-center space-x-0 flex-shrink-0">
-                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">A</button>
-                                    <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
+                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-0 rounded transition-all duration-200" aria-label="Asr prayer time">A</button>
+                                    <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
                                 </div>
                                 <div class="flex items-center space-x-0 flex-shrink-0">
-                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">M</button>
-                                    <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
+                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-0 rounded transition-all duration-200" aria-label="Maghrib prayer time">M</button>
+                                    <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
                                 </div>
                                 <div class="flex items-center space-x-0 flex-shrink-0">
-                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">I</button>
-                                    <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
+                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-0 rounded transition-all duration-200" aria-label="Isha prayer time">I</button>
+                                    <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
                                 </div>
                                 <div class="flex items-center space-x-0 flex-shrink-0">
-                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0 py-0 rounded transition-all duration-200">Q</button>
-                                    <input type="time" class="text-xs text-slate-900 border border-slate-300/60 rounded px-0 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
+                                    <button class="text-xs font-normal text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-1 py-0 rounded transition-all duration-200" aria-label="Qiyam prayer time">Q</button>
+                                    <input type="time" class="text-xs text-slate-900 border border-slate-300 rounded px-1 py-0 w-12 focus:outline-none focus:ring-0 focus:ring-blue-500/20 focus:border-blue-500 bg-white flex-shrink-0">
                                 </div>
                             </div>
                         </div>
@@ -512,10 +508,10 @@
             return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
-                        <span class="text-xs font-semibold text-slate-900">Goals Tracker</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Goal</button>
+                        <span class="text-xs font-semibold text-slate-900">GOALS TRACKER</span>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Goal</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Progress</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Progress</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">5 active</span>
@@ -553,11 +549,11 @@
             return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
-                        <span class="text-xs font-semibold text-slate-900">Daily Log</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Entry</button>
+                        <span class="text-xs font-semibold text-slate-900">DAILY LOG</span>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Entry</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Today</button>
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Search</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Today</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Search</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">3 entries</span>
@@ -594,9 +590,9 @@
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
                         <span class="text-xs font-semibold text-slate-900">Notes</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Note</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Note</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Categories</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Categories</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">12 notes</span>
@@ -632,14 +628,14 @@
             return `
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
-                        <span class="text-xs font-semibold text-slate-900">Complete Personal Lists</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add List</button>
+                        <span class="text-xs font-semibold text-slate-900">COMPLETE PERSONAL LISTS</span>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add List</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Archive</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Archive</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">68 items</span>
-                            <div class="w-px h-3 bg-slate-300/60"></div>
+                            <div class="w-px h-4 bg-slate-300"></div>
                             <span class="text-xs text-slate-900">5 categories</span>
                         </div>
                     </div>
@@ -877,9 +873,9 @@
                 <div class="bg-gradient-to-r from-slate-50 to-white border-t border-b border-slate-200 px-1 py-1 overflow-x-auto whitespace-nowrap shadow-sm flex-shrink-0">
                     <div class="flex items-center space-x-2" style="min-width: max-content;">
                         <span class="text-xs font-semibold text-slate-900">${displayName}</span>
-                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-1 py-1 rounded hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Item</button>
+                        <button onclick="addNewRow()" class="text-xs font-medium bg-blue-600 text-white px-2 py-1.5 rounded-md hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/50">+ Add Item</button>
                         <div class="flex items-center space-x-1">
-                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300/60 px-1 py-1 rounded hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Clear</button>
+                            <button class="text-xs font-medium text-slate-600 bg-white border border-slate-300 px-2 py-1 rounded-md hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm">Clear</button>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-900">0 items</span>
