@@ -151,7 +151,7 @@
                         <tbody>
                             ${Array.from({length: 37}, (_, i) => {
                                 const bgClass = 'bg-white hover:bg-slate-50';
-                                return `<tr class="${bgClass}" style="height: 28px;">`
+                                return `<tr class="${bgClass}" style="height: 28px;">
                                     ${Array.from({length: 25}, (_, j) =>
                                         `<td class="text-left align-middle text-xs font-medium text-slate-900 whitespace-nowrap overflow-hidden px-0 py-1 leading-none border-t border-b border-slate-200">${i * 25 + j + 1}</td>`
                                     ).join('')}
